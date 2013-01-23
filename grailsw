@@ -333,4 +333,3 @@ startGrails() {
 }
 
 startGrails $STARTER_MAIN_CLASS "$@"
-

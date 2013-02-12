@@ -4,12 +4,12 @@
 		<meta name="layout" content="main"/>
 		<title>Welcome to Grails</title>
 		<style type="text/css" media="screen">
-			#status {
+			#question {
 				background-color: #eee;
 				border: .2em solid #fff;
 				margin: 2em 2em 1em;
 				padding: 1em;
-				width: 12em;
+				width: auto;
 				float: left;
 				-moz-box-shadow: 0px 0px 1.25em #ccc;
 				-webkit-box-shadow: 0px 0px 1.25em #ccc;
@@ -19,27 +19,27 @@
 				border-radius: 0.6em;
 			}
 
-			.ie6 #status {
+			.ie6 #question {
 				display: inline; /* float double margin fix http://www.positioniseverything.net/explorer/doubled-margin.html */
 			}
 
-			#status ul {
+			#question ul {
 				font-size: 0.9em;
 				list-style-type: none;
 				margin-bottom: 0.6em;
 				padding: 0;
 			}
             
-			#status li {
+			#question li {
 				line-height: 1.3;
 			}
 
-			#status h1 {
+			#question h1 {
 				text-transform: uppercase;
 				font-size: 1.1em;
 				margin: 0 0 0.3em;
 			}
-
+			
 			#page-body {
 				margin: 2em 1em 1.25em 18em;
 			}
@@ -64,9 +64,20 @@
 				list-style-position: inside;
 				margin: 0.25em 0;
 			}
+			
+			#TopQuestions {
+				float: left;
+				width: 90%;
+			}
+			
+			#Tags {
+				margin-left: 90%;
+				width: 10%
+			}
+			
 
 			@media screen and (max-width: 480px) {
-				#status {
+				#question {
 					display: none;
 				}
 
@@ -82,41 +93,39 @@
 	</head>
 	<body>
 		<a href="#page-body" class="skip"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div id="status" role="complementary">
-			<h1>Application Status</h1>
-			<ul>
-				<li>App version: <g:meta name="app.version"/></li>
-				<li>Grails version: <g:meta name="app.grails.version"/></li>
-				<li>Groovy version: ${org.codehaus.groovy.runtime.InvokerHelper.getVersion()}</li>
-				<li>JVM version: ${System.getProperty('java.version')}</li>
-				<li>Reloading active: ${grails.util.Environment.reloadingAgentEnabled}</li>
-				<li>Controllers: ${grailsApplication.controllerClasses.size()}</li>
-				<li>Domains: ${grailsApplication.domainClasses.size()}</li>
-				<li>Services: ${grailsApplication.serviceClasses.size()}</li>
-				<li>Tag Libraries: ${grailsApplication.tagLibClasses.size()}</li>
-			</ul>
-			<h1>Installed Plugins</h1>
-			<ul>
-				<g:each var="plugin" in="${applicationContext.getBean('pluginManager').allPlugins}">
-					<li>${plugin.name} - ${plugin.version}</li>
-				</g:each>
-			</ul>
+		<div id="TopQuestions" role="complementary">
+			<h1>Top Questions</h1>			
+			<g:each var="plugin" in="${applicationContext.getBean('pluginManager').allPlugins}">
+			<table id="question">
+				<tr>
+					<td>0 votes</td>
+					<td>0 answers</td>
+					<td>0 views</td>
+					<td><a>How to make a simple pie chart using Kendo UI ASP.NET MVC using Entity Framework?</a></td>
+				</tr>
+				<tr>
+					<td/><td/><td/>
+					<td><table><tr><td>TAG 1</td><td>TAG 2</td><td>TAG 3</td></tr></table></td>
+					<td>Infos Publisher</td>
+				</tr>
+				</table>
+			</g:each>		
 		</div>
-		<div id="page-body" role="main">
-			<h1>Welcome to Grails</h1>
-			<p>Congratulations, you have successfully started your first Grails application! At the moment
-			   this is the default page, feel free to modify it to either redirect to a controller or display whatever
-			   content you may choose. Below is a list of controllers that are currently deployed in this application,
-			   click on each to execute its default action:</p>
-
-			<div id="controller-list" role="navigation">
-				<h2>Available Controllers:</h2>
-				<ul>
-					<g:each var="c" in="${grailsApplication.controllerClasses.sort { it.fullName } }">
-						<li class="controller"><g:link controller="${c.logicalPropertyName}">${c.fullName}</g:link></li>
-					</g:each>
-				</ul>
-			</div>
+		<div id="Tags">
+			<table>
+				<tr>
+				<td><h1>Tagged</h1></td>
+				</tr>
+				<tr>
+					<td>TAG1</td>
+				</tr>
+				<tr>
+					<td>TAG2</td>
+				</tr>
+				<tr>
+					<td>TAG3</td>
+				</tr>
+			</table>
 		</div>
 	</body>
 </html>

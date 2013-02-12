@@ -18,7 +18,19 @@
 		<r:layoutResources />
 	</head>
 	<body>
-		<div id="grailsLogo" role="banner"><a href="http://grails.org"><img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/></a></div>
+		<div id="menu">
+			<table>
+				<tr>
+					<td><a href="">Questions</a></td>
+					<td><a href="">Tags</a></td>
+					<td><a href="">Users</a></td>
+					<td><a href="">Badges</a></td>
+					<td><a href="">Unanswered</a></td>
+					<td><a href="">Ask Question</a></td>
+				</tr>
+			</table>
+		</div>
+		<div id="grailsLogo" role="banner"><img src="${resource(dir: 'images', file: 'logo2.png')}" alt="Grails"/></div>
 		<g:layoutBody/>
 		<div class="footer" role="contentinfo"></div>
 		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>

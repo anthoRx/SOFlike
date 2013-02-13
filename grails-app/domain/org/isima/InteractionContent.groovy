@@ -8,7 +8,7 @@ abstract class InteractionContent {
 	Timestamp creationDate;
 	
 	static hasMany = [votes:Vote,versionings:Versioning,comments:Comment]
-	static belongsTo = [user:User]
+	//static belongsTo = [user:User]
 	
     static constraints = {
     }

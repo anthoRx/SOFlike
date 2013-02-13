@@ -1,6 +1,6 @@
 package org.isima
 
-class Question {
+class Question extends InteractionContent {
 	String title
 	int nbView
 	

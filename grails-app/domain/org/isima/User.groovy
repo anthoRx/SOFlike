@@ -3,17 +3,26 @@ package org.isima
 class User {
 
 	transient springSecurityService
-
+	
 	String username
 	String password
 	boolean enabled
 	boolean accountExpired
 	boolean accountLocked
 	boolean passwordExpired
+	//Custom params
+	String name
+	String lastName
+	int points
 
+	static hasMany = [badges:Badge,votes:Vote,interactionContents:InteractionContent]
+	
 	static constraints = {
 		username blank: false, unique: true
 		password blank: false
+		name nullable: true
+		lastName nullable: true
+		points nullable: true
 	}
 
 	static mapping = {

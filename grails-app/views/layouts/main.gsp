@@ -30,6 +30,14 @@
 				</tr>
 			</table>
 		</div>
+		<div id="login">
+			<sec:ifLoggedIn>
+			Bienvenue <sec:username/>!
+			</sec:ifLoggedIn>
+			<sec:ifNotLoggedIn>
+				<g:link controller='login' action='auth'>Login</g:link>
+			</sec:ifNotLoggedIn> 
+		</div>
 		<div id="grailsLogo" role="banner"><img src="${resource(dir: 'images', file: 'logo2.png')}" alt="Grails"/></div>
 		<g:layoutBody/>
 		<div class="footer" role="contentinfo"></div>

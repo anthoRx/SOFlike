@@ -3,7 +3,7 @@ package org.isima
 class Vote {
 	int value;
 	
-	static belongsTo = [interactionContent:InteractionContent]
+	static belongsTo = [user:User,interactionContent:InteractionContent]
 	
     static constraints = {
     }

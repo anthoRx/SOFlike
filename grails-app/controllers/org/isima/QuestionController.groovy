@@ -22,7 +22,7 @@ class QuestionController {
     }
 	
 	
-	@Secured(['ROLE_ADMIN'])
+	@Secured(['ROLE_USER'])
     def create() {
         [questionInstance: new Question(params)]
     }

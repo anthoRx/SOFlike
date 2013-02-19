@@ -8,4 +8,5 @@ class Question extends InteractionContent {
 	
     static constraints = {
     }
+	
 }

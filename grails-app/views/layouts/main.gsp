@@ -17,27 +17,39 @@
 		<g:layoutHead/>
 		<r:layoutResources />
 	</head>
-	<body>
+	<body>	
+		<div style="float:left;">
+			<sec:ifLoggedIn>
+			<!--  Essaye de recup l'id  -->
+			<g:link controller='user' action="show" id="${sec.loggedInUserInfo(field:'id')}"><sec:username/></g:link>
+			&nbsp;&nbsp;&nbsp;
+			</sec:ifLoggedIn>
+			<sec:ifNotLoggedIn>
+				<g:link controller='login' action='auth'>Login</g:link>
+			</sec:ifNotLoggedIn> 
+		</div>
+		<div id="nav" style="margin-left: 90%;">
+			<a class="home" href="${createLink(uri: '/')}"><img src="${resource(dir: 'images/skin', file: 'house.png')}" alt="Home"/></a>
+			<sec:ifLoggedIn>
+			<g:link controller='logout'><img src="${resource(dir: 'images', file: 'exit.png')}" alt="Logout"/></g:link>
+			</sec:ifLoggedIn>
+			<sec:ifNotLoggedIn>
+				<g:link controller='user' action="create">Join-us !</g:link>
+			</sec:ifNotLoggedIn>
+		</div>
 		<div id="menu">
 			<table>
 				<tr>
 					<td><a href="">Questions</a></td>
 					<td><a href="">Tags</a></td>
-					<td><a href="">Users</a></td>
+					<td><g:link controller='User' action='list'>Users</g:link></td>
 					<td><a href="">Badges</a></td>
 					<td><a href="">Unanswered</a></td>
 					<td><a href="">Ask Question</a></td>
 				</tr>
 			</table>
 		</div>
-		<div id="login">
-			<sec:ifLoggedIn>
-			Bienvenue <sec:username/>!
-			</sec:ifLoggedIn>
-			<sec:ifNotLoggedIn>
-				<g:link controller='login' action='auth'>Login</g:link>
-			</sec:ifNotLoggedIn> 
-		</div>
+		
 		<div id="grailsLogo" role="banner"><img src="${resource(dir: 'images', file: 'logo2.png')}" alt="Grails"/></div>
 		<g:layoutBody/>
 		<div class="footer" role="contentinfo"></div>

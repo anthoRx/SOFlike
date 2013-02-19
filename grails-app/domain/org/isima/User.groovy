@@ -1,4 +1,6 @@
 package org.isima
+import javax.imageio.*
+import javax.imageio.spi.*
 
 class User {
 
@@ -14,7 +16,12 @@ class User {
 	String name
 	String lastName
 	int points
-
+	//Avatar
+	byte[] avatar
+	String avatarType
+	
+	List interactionsContents
+	
 	static hasMany = [badges:Badge,votes:Vote,interactionContents:InteractionContent]
 	
 	static constraints = {
@@ -23,6 +30,8 @@ class User {
 		name nullable: true
 		lastName nullable: true
 		points nullable: true
+		avatar(nullable:true, maxSize: 16384 /* 16K */)
+		avatarType(nullable:true)
 	}
 
 	static mapping = {
@@ -34,6 +43,18 @@ class User {
 	}
 
 	def beforeInsert() {
+		//We add the avatar
+		def img = ImageIO.read(new File("/Users/PFR/Desktop/client.png"));
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write( img, "png", baos );
+		baos.flush();
+		
+		byte[] imageInByte = baos.toByteArray();
+		baos.close();
+		
+		avatar = imageInByte
+		avatarType = "png"
+		
 		encodePassword()
 	}
 

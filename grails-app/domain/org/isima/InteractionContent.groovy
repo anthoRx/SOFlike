@@ -7,7 +7,7 @@ abstract class InteractionContent {
 	String content;
 	Timestamp creationDate;
 	
-	static hasMany = [votes:Vote,versionings:Versioning,comments:Comment]
+	static hasMany = [votes: Vote, versionings: Versioning, comments: Comment]
 	static belongsTo = [user:User]
 	
     static constraints = {

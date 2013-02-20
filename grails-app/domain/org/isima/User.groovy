@@ -30,7 +30,7 @@ class User {
 		name nullable: true
 		lastName nullable: true
 		points nullable: true
-		avatar(nullable:true, maxSize: 16384 /* 16K */)
+		avatar(nullable:true, maxSize: 3000000 /* 3MO */)
 		avatarType(nullable:true)
 	}
 
@@ -43,6 +43,8 @@ class User {
 	}
 
 	def beforeInsert() {
+		//We set enabled true
+		enabled = true;
 		//We add the avatar
 		def img = ImageIO.read(new File("/Users/PFR/Desktop/client.png"));
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -66,5 +68,10 @@ class User {
 
 	protected void encodePassword() {
 		password = springSecurityService.encodePassword(password)
+	}
+	
+	@Override String toString()
+	{
+		return this.username;
 	}
 }

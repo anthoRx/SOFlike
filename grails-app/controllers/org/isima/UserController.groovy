@@ -2,6 +2,9 @@ package org.isima
 
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.web.multipart.commons.CommonsMultipartFile
+import org.apache.commons.lang.StringUtils
+import org.isima.Question
+import org.isima.Answer
 
 class UserController {
 
@@ -17,6 +20,7 @@ class UserController {
     }
 
     def create() {
+		params.put("enabled", true)
         [userInstance: new User(params)]
     }
 
@@ -27,7 +31,7 @@ class UserController {
             return
         }
 
-        flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])
+        flash.message = message(code: 'default.created.message')
         redirect(action: "show", id: userInstance.id)
     }
 
@@ -38,8 +42,15 @@ class UserController {
             redirect(action: "list")
             return
         }
-
-        [userInstance: userInstance]
+		def questions = Question.getAll().findAll { it.user.id == userInstance.id}
+		//def answers = Answer.getAll().findAll { it.question.user.id == userInstance.id}
+		//def tags = Tag.getAll().findAll { it.user.id == userInstance.id}
+		//def badges = Badge.getAll().findAll { it.users.id == id}
+		
+        [userInstance: userInstance, questions: questions ]
+		//[answers: answers]
+		//[tags: tags]
+		//[badges: badges]
     }
 
     def edit(Long id) {
@@ -71,6 +82,7 @@ class UserController {
             }
         }
 
+		//params = params.findAll{!StringUtils.isBlank(it)}
         userInstance.properties = params
 
         if (!userInstance.save(flush: true)) {
@@ -85,7 +97,7 @@ class UserController {
 	  
 		// List of OK mime-types
 		def okcontents = ['image/png', 'image/jpeg', 'image/gif']
-		if(f.size != 0)
+		if(!f.isEmpty())
 		{
 			if (! okcontents.contains(f.getContentType())) {
 			  flash.message = "Avatar must be one of: ${okcontents}"

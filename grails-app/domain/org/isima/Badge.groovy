@@ -1,5 +1,7 @@
 package org.isima
 
+import groovy.transform.ToString;
+
 class Badge {
 	
 	String name;
@@ -8,4 +10,10 @@ class Badge {
 	static belongsTo = User
     static constraints = {
     }
+	
+	
+	@Override String toString()
+	{
+		return this.name
+	}
 }

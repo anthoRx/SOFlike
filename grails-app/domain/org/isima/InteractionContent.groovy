@@ -1,11 +1,11 @@
 package org.isima
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 
 abstract class InteractionContent {
 	String content;
-	Timestamp creationDate;
+	Date creationDate;
 	
 	static hasMany = [votes: Vote, versionings: Versioning, comments: Comment]
 	static belongsTo = [user:User]

@@ -1,6 +1,6 @@
 package org.isima
 
-import java.sql.Timestamp
+import java.util.Date
 
 class Question extends InteractionContent {
 	String title
@@ -13,6 +13,6 @@ class Question extends InteractionContent {
 	
 	def beforeInsert() {
 		Date date= new Date()
-		creationDate = new Timestamp(date.getTime())
+		creationDate = date
 	}
 }

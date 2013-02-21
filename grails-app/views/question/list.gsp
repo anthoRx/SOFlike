@@ -75,11 +75,11 @@
 			<g:each in="${questionInstanceList}" status="i" var="questionInstance">
 			<table id="question">	
 					<tr>
-						<td>0 Votes</td>
+						<td>${questionInstance.getVotes().size()} Votes</td>
 					
-						<td>${fieldValue(bean: questionInstance, field: "nbView")} views</td>
+						<td>${fieldValue(bean: questionInstance, field: "nbView")} view(s)</td>
 					
-						<td>0 answers</td>
+						<td>${questionInstance.getAnswers().size()} answer(s)</td>
 					
 						<td><g:link action="show" id="${questionInstance.id}">${fieldValue(bean: questionInstance, field: "title")}</g:link></td>
 					</tr>

@@ -29,11 +29,11 @@ class BootStrap {
 		Badge b = new Badge();
 		b.name = "Badge1"
   
-		java.util.Date date= new java.util.Date()
-		Question testQ1 = new Question(title: 'Why ?', nbView: 0, content: 'Why not ?', creationDate: new Timestamp(date.getTime()))
+		Date date= new Date()
+		Question testQ1 = new Question(title: 'Why ?', nbView: 0, content: 'Why not ?', creationDate: date)
 		testQ1.save();
 		
-		Question testQ2 = new Question(title: 'Why 2 ?', nbView: 10, content: 'Why not too ?', creationDate: new Timestamp(date.getTime()))
+		Question testQ2 = new Question(title: 'Why 2 ?', nbView: 10, content: 'Why not too ?', creationDate: date)
 		testQ2.save();
 			
 		testUser.addToBadges(b).save()

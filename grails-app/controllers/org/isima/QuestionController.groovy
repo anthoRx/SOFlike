@@ -22,7 +22,6 @@ class QuestionController {
     }
 	
 	
-	@Secured(['ROLE_USER'])
     def create() {
         [questionInstance: new Question(params)]
     }
@@ -30,9 +29,12 @@ class QuestionController {
     def save() {
         def questionInstance = new Question(params)
 		def date= new Date()
-		def user = springSecurityService.currentUser
 		questionInstance.creationDate = new Timestamp(date.getTime())
-		questionInstance.user = user
+		
+		if(!params.user) {
+			def user = springSecurityService.currentUser
+			questionInstance.user = user
+		}
 		
         if (!questionInstance.save(flush: true)) {
             render(view: "create", model: [questionInstance: questionInstance])

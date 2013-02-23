@@ -3,16 +3,35 @@ package org.isima
 
 
 import org.junit.*
+
 import grails.test.mixin.*
+import org.springframework.mock.web.MockMultipartFile
+import org.springframework.mock.web.MockMultipartHttpServletRequest
 
 @TestFor(UserController)
-@Mock(User)
+@Mock([User,Question])
 class UserControllerTests {
-
+	
+	@Before
+	void setUp() {
+		// The method isDirty isn't mocked in Grails 2.1.1
+		// So we add the method to the User's metaclass in order to execute
+		// to execute tests on User domain class
+		// see the GRAILS-7506 issue for more information
+		User.metaClass.isDirty = { 
+			return true
+		}
+	}
+		
     def populateValidParams(params) {
         assert params != null
-        // TODO: Populate valid properties like...
-        //params["name"] = 'someValidName'
+
+		params["username"] = "bobby"
+		params["password"] = "pass"
+		params["name"] = "Bobby"
+		params["lastName"] = "Bob"
+		params["points"] = "0"
+		params["enabled"] = "false"
     }
 
     void testIndex() {
@@ -101,8 +120,17 @@ class UserControllerTests {
 
         // test invalid parameters in update
         params.id = user.id
-        //TODO: add invalid values to params object
-
+		params["lastName"] = 1234
+		params["points"] = "Nothing"
+		
+		// Mock the image upload
+		def imgContentType = 'image/jpeg'
+		def imgContentBytes = '123' as byte[]
+		controller.metaClass.request = new MockMultipartHttpServletRequest()
+		controller.request.addFile(
+			new MockMultipartFile('avatar', 'myImage.jpg', imgContentType, imgContentBytes)
+		)
+		
         controller.update()
 
         assert view == "/user/edit"

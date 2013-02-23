@@ -3,16 +3,27 @@ package org.isima
 
 
 import org.junit.*
+
 import grails.test.mixin.*
+import java.sql.Timestamp
 
 @TestFor(AnswerController)
-@Mock(Answer)
+@Mock([Answer,User,Question])
 class AnswerControllerTests {
-
+		
     def populateValidParams(params) {
         assert params != null
-        // TODO: Populate valid properties like...
-        //params["name"] = 'someValidName'
+		
+		def date = new Timestamp(new Date().getTime())
+		def loggedInUser = new User(username: 'bobby', enabled: false, password: 'password', name: 'Bob', lastName: 'Bobby', points: 0);
+		loggedInUser.save(flush: true)		
+		def question = new Question(title: 'Should I buy a boat ??', nbView: 10, content: 'That is the question', creationDate: date)
+		question.save(flush: true)
+		
+		params["content"] = "Yes of course"
+		params["creationDate"] = date
+		params["user"] = loggedInUser
+		params["question"] = question
     }
 
     void testIndex() {
@@ -101,7 +112,7 @@ class AnswerControllerTests {
 
         // test invalid parameters in update
         params.id = answer.id
-        //TODO: add invalid values to params object
+		params["question"] = "This is not a valid question"
 
         controller.update()
 

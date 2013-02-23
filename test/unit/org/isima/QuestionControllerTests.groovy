@@ -27,7 +27,7 @@ class QuestionControllerTests {
     def populateValidParams(params) {
         assert params != null
 		params["title"] = "Should I buy a boat ?"
-		params["content"] = "Yes of course"
+		params["content"] = "I'm not sure if it's a good idea"
 		params["nbView"] = 0
 		params["creationDate"] = new Timestamp(new Date().getTime())
 		params["user"] = controller.springSecurityService.currentUser

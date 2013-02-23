@@ -1,7 +1,7 @@
 package org.isima
 
 import org.springframework.dao.DataIntegrityViolationException
-import org.springframework.web.multipart.commons.CommonsMultipartFile
+import org.springframework.web.multipart.MultipartFile
 import org.apache.commons.lang.StringUtils
 import org.isima.Question
 import org.isima.Answer
@@ -93,7 +93,7 @@ class UserController {
 		//Handle the avatar
 		
 		// Get the avatar file from the multi-part request
-		CommonsMultipartFile f = request.getFile('avatar')
+		MultipartFile f = request.getFile('avatar')
 	  
 		// List of OK mime-types
 		def okcontents = ['image/png', 'image/jpeg', 'image/gif']

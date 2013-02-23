@@ -25,6 +25,8 @@ class AnswerController {
 	
 	def saveInShow() {
 		def answerInstance = new Answer(params)
+		//We set the content. Error with richui if samename for field (question, answer)
+		answerInstance.content = params.contentAnswer
 		//We retrieve the question
 		def questionInstance = params.questionInstance
 		questionInstance = Question.get(questionInstance);

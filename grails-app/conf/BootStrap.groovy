@@ -26,8 +26,7 @@ class BootStrap {
 		testUser4.save(flush: true)
 		testUser5.save(flush: true)
 		
-		Badge b = new Badge();
-		b.name = "Badge1"
+		Badge b = new Badge(name: "Guru", pointsToObtain: 10);
   
 		Date date= new Date()
 		Question testQ1 = new Question(title: 'Why ?', nbView: 0, content: 'Why not ?', creationDate: date)

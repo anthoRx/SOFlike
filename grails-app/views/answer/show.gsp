@@ -38,7 +38,7 @@
 				<li class="fieldcontain">
 					<span id="content-label" class="property-label"><g:message code="answer.content.label" default="Content" /></span>
 					
-						<span class="property-value" aria-labelledby="content-label"><g:fieldValue bean="${answerInstance}" field="content"/></span>
+						<span class="property-value" aria-labelledby="content-label">${fieldValue(bean:answerInstance, field:'content').decodeHTML()}</span>
 					
 				</li>
 				</g:if>

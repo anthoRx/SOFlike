@@ -5,122 +5,88 @@
 	<head>
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'question.label', default: 'Question')}" />
-		<title><g:message code="default.show.label" args="[entityName]" /></title>
+		<title><g:message code="default.show.label" args="[entityName]" /></title>	
 		<g:javascript library="jquery" />
 	</head>
 	<body>
 		<a href="#show-question" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
-			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
-				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-			</ul>
-		</div>
+
 		<div id="show-question" class="content scaffold-show" role="main">
 			<h1>${questionInstance?.title}</h1>
 			<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
-			<ol class="property-list question">
+
 				<g:if test="${questionInstance?.comments}">
-				<li class="fieldcontain">
-					<span id="comments-label" class="property-label"><g:message code="question.comments.label" default="Comments" /></span>
-					
 						<g:each in="${questionInstance.comments}" var="c">
 						<span class="property-value" aria-labelledby="comments-label"><g:link controller="comment" action="show" id="${c.id}">${c?.encodeAsHTML()}</g:link></span>
 						</g:each>
-					
-				</li>
 				</g:if>
 			
+				<div id="vote" style="float: left;margin-left: 5%; margin-top: 2%;">
+					<table>
+					<tr><td><a class="home" href="${createLink(uri: '/')}"><img src="${resource(dir: 'images', file: 'Up.png')}" alt="Home"/></a></td></tr>
+					<tr><td style="font-size: 26px;text-align: center;">${questionInstance?.getValeurVotes()}</td></tr>
+					<tr><td><a class="home" href="${createLink(uri: '/')}"><img src="${resource(dir: 'images', file: 'Down.png')}" alt="Home"/></a></td></tr>
+					</table>
+				</div>
+				
+				<div id="content" style="background-color: #eee;
+				border: .2em solid #fff;
+				margin: 2em 2em 1em;
+				padding: 1em;
+			
+				-moz-box-shadow: 0px 0px 1.25em #ccc;
+				-webkit-box-shadow: 0px 0px 1.25em #ccc;
+				box-shadow: 0px 0px 1.25em #ccc;
+				-moz-border-radius: 0.6em;
+				-webkit-border-radius: 0.6em;
+				border-radius: 0.6em;
+				margin-left: 20%;">
 				<g:if test="${questionInstance?.content}">
-				<li class="fieldcontain">
-					<span id="content-label" class="property-label"><g:message code="question.content.label" default="Content" /></span>
-					
-						<span class="property-value" aria-labelledby="content-label"><g:fieldValue bean="${questionInstance}" field="content"/></span>
-					
-				</li>
+						<p><g:fieldValue bean="${questionInstance}" field="content"/></p>
 				</g:if>
-			
-				<g:if test="${questionInstance?.creationDate}">
-				<li class="fieldcontain">
-					<span id="creationDate-label" class="property-label"><g:message code="question.creationDate.label" default="Creation Date" /></span>
-					
-						<span class="property-value" aria-labelledby="creationDate-label"><g:fieldValue bean="${questionInstance}" field="creationDate"/></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${questionInstance?.nbView}">
-				<li class="fieldcontain">
-					<span id="nbView-label" class="property-label"><g:message code="question.nbView.label" default="Nb View" /></span>
-					
-						<span class="property-value" aria-labelledby="nbView-label"><g:fieldValue bean="${questionInstance}" field="nbView"/></span>
-					
-				</li>
-				</g:if>
-			
+				</div>
+				
+				<div id="tags">
 				<g:if test="${questionInstance?.tags}">
-				<li class="fieldcontain">
-					<span id="tags-label" class="property-label"><g:message code="question.tags.label" default="Tags" /></span>
-					
 						<g:each in="${questionInstance.tags}" var="t">
-						<span class="property-value" aria-labelledby="tags-label"><g:link controller="tag" action="show" id="${t.id}">${t?.encodeAsHTML()}</g:link></span>
+							<span><g:link controller="tag" action="show" id="${t.id}">${t?.encodeAsHTML()}</g:link></span>
 						</g:each>
-					
-				</li>
 				</g:if>
-			
-				<g:if test="${questionInstance?.title}">
-				<li class="fieldcontain">
-					<span id="title-label" class="property-label"><g:message code="question.title.label" default="Title" /></span>
-					
-						<span class="property-value" aria-labelledby="title-label"><g:fieldValue bean="${questionInstance}" field="title"/></span>
-					
-				</li>
-				</g:if>
-			
+				</div>
+				
+				<div id="bottom" align="center" style="margin-left: 20%;">
+				<table>
+				<tr>
+				<td style="width: 33%;">Edit</td>
+				<td style="width: 33%;">
+					<g:if test="${questionInstance?.creationDate}">
+						<span><g:fieldValue bean="${questionInstance}" field="creationDate"/></span>
+					</g:if>
+				</td>
+				<td style="width: 33%;text-align:center;">
 				<g:if test="${questionInstance?.user}">
-				<li class="fieldcontain">
-					<span id="user-label" class="property-label"><g:message code="question.user.label" default="User" /></span>
-					
-						<span class="property-value" aria-labelledby="user-label"><g:link controller="user" action="show" id="${questionInstance?.user?.id}">${questionInstance?.user?.encodeAsHTML()}</g:link></span>
-					
-				</li>
+					<g:link controller="user" action="show" id="${questionInstance?.user?.id}">${questionInstance?.user?.encodeAsHTML()}</g:link>		
 				</g:if>
 			
-				<g:if test="${questionInstance?.versionings}">
-				<li class="fieldcontain">
-					<span id="versionings-label" class="property-label"><g:message code="question.versionings.label" default="Versionings" /></span>
-					
-						<g:each in="${questionInstance.versionings}" var="v">
-						<span class="property-value" aria-labelledby="versionings-label"><g:link controller="versioning" action="show" id="${v.id}">${v?.encodeAsHTML()}</g:link></span>
-						</g:each>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${questionInstance?.votes}">
-				<li class="fieldcontain">
-					<span id="votes-label" class="property-label"><g:message code="question.votes.label" default="Votes" /></span>
-					
-						<g:each in="${questionInstance.votes}" var="v">
-						<span class="property-value" aria-labelledby="votes-label"><g:link controller="vote" action="show" id="${v.id}">${v?.encodeAsHTML()}</g:link></span>
-						</g:each>
-					
-				</li>
-				</g:if>
-			
+				</td>
+				</tr>
+				</table>
+				</div>
+				<br/>
 				<h1>Answers</h1>
 				<div id="answers">
 					<g:render template="/answer/answersByQuestion" model="['questionInstance':questionInstance]" />
+				
 				</div>	
-			</ol>
-			
+				
 				<g:formRemote name="myForm" on404="alert('not found!')" update="answers"
               	url="[controller: 'answer', action:'saveInShow', params: [questionInstance: "${questionInstance?.id}"]]">
 						<g:include controller="answer" action="createInShow" />
+						<fieldset class="buttons">
+							<g:submitButton name="create" class="save" value="Add Answer" />
+						</fieldset>
 				</g:formRemote>
 				
 				<g:form>
@@ -130,7 +96,7 @@
 						<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
 					</fieldset>
 				</g:form>
-			
+				
 		</div>
 	</body>
 </html>

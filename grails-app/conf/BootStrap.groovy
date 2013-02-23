@@ -30,7 +30,7 @@ class BootStrap {
 		b.name = "Badge1"
   
 		Date date= new Date()
-		Question testQ1 = new Question(title: 'Why ?', nbView: 0, content: 'Why not ?', creationDate: date)
+		Question testQ1 = new Question(title: 'Why ?', nbView: 0, content: 'I have a bunch of threads that generate events of type A and type B.My program takes these events, wraps them in a message and sends them across the network. A message can hold either one A event, one B event, or one A event and one B event:\n endMessage(new Message(a: 1,    b: null));\n SendMessage(new Message(a: null, b: 2   ));\n SendMessage(new Message(a: 3,    b: 4   ));\n Events of type A happen quite frequently, while events of type B occur much less often. So, when a thread generates a B event, my program waits a bit to see if another thread generates an A event and combines the A event and the B event if possible.\n Here is my code:', creationDate: date)
 		testQ1.save();
 		
 		Question testQ2 = new Question(title: 'Why 2 ?', nbView: 10, content: 'Why not too ?', creationDate: date)

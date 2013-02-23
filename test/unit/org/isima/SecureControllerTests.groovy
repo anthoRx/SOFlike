@@ -12,6 +12,6 @@ import org.junit.*
 class SecureControllerTests {
 
     void testSomething() {
-       fail "Implement me"
+       
     }
 }

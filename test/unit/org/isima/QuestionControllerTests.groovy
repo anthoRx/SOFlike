@@ -4,15 +4,33 @@ package org.isima
 
 import org.junit.*
 import grails.test.mixin.*
+import java.sql.Timestamp
 
 @TestFor(QuestionController)
-@Mock(Question)
+@Mock([Question,User])
 class QuestionControllerTests {
-
+	
+	@Before
+	void setUp() {
+		// We save the user in order to have an id
+		def loggedInUser = new User(username: 'bobby', enabled: false, password: 'password', name: 'Bob', lastName: 'Bobby', points: 0);
+		loggedInUser.save(flush: true)
+		
+		// We mock the springSecurityService
+		controller.springSecurityService = [
+			encodePassword: 'password',
+			reauthenticate: { String u -> true},
+			loggedIn: true,
+			currentUser: loggedInUser]
+	}
+	
     def populateValidParams(params) {
         assert params != null
-        // TODO: Populate valid properties like...
-        //params["name"] = 'someValidName'
+		params["title"] = "Should I buy a boat ?"
+		params["content"] = "Yes of course"
+		params["nbView"] = 0
+		params["creationDate"] = new Timestamp(new Date().getTime())
+		params["user"] = controller.springSecurityService.currentUser
     }
 
     void testIndex() {
@@ -35,6 +53,7 @@ class QuestionControllerTests {
     }
 
     void testSave() {
+		
         controller.save()
 
         assert model.questionInstance != null
@@ -58,7 +77,7 @@ class QuestionControllerTests {
 
         populateValidParams(params)
         def question = new Question(params)
-
+		
         assert question.save() != null
 
         params.id = question.id
@@ -101,7 +120,7 @@ class QuestionControllerTests {
 
         // test invalid parameters in update
         params.id = question.id
-        //TODO: add invalid values to params object
+        params.nbView = "oo"
 
         controller.update()
 

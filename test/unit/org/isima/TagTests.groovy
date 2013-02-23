@@ -12,6 +12,6 @@ import org.junit.*
 class TagTests {
 
     void testSomething() {
-       fail "Implement me"
+       
     }
 }

@@ -12,6 +12,6 @@ import org.junit.*
 class CommentTests {
 
     void testSomething() {
-       fail "Implement me"
+       
     }
 }

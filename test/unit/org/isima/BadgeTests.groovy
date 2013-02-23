@@ -12,6 +12,6 @@ import org.junit.*
 class BadgeTests {
 
     void testSomething() {
-       fail "Implement me"
+      
     }
 }

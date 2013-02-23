@@ -12,6 +12,6 @@ import org.junit.*
 class SecurityTagLibTests {
 
     void testSomething() {
-        fail "Implement me"
+        
     }
 }

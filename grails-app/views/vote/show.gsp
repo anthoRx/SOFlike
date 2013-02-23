@@ -1,0 +1,1 @@
+${voteInstance?.interactionContent.getValeurVotes()}

@@ -5,6 +5,7 @@ import org.springframework.dao.DataIntegrityViolationException
 class AnswerController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+	def springSecurityService
 
     def index() {
         redirect(action: "list", params: params)
@@ -25,6 +26,9 @@ class AnswerController {
 	
 	def saveInShow() {
 		def answerInstance = new Answer(params)
+		//We retrieve the user
+		def user = springSecurityService.currentUser
+		answerInstance.user = user
 		//We set the content. Error with richui if samename for field (question, answer)
 		answerInstance.content = params.contentAnswer
 		//We retrieve the question

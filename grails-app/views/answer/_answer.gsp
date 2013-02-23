@@ -1,10 +1,35 @@
 <div>
 <div id="vote" style="float: left;margin-left: 5%; margin-top: 2%;">
 	<table>
-	<tr><td><a class="home" href="${createLink(uri: '/')}"><img src="${resource(dir: 'images', file: 'Up.png')}" alt="Home"/></a></td></tr>
-	<tr><td style="font-size: 26px;text-align: center;">${answerInstance?.getValeurVotes()}</td></tr>
-	<tr><td><a class="home" href="${createLink(uri: '/')}"><img src="${resource(dir: 'images', file: 'Down.png')}" alt="Home"/></a></td></tr>
+	<tr><td>
+		<sec:ifLoggedIn>
+            	<g:formRemote name="myForm" on404="alert('not found!')" update="noteValue${answerInstance?.id}"
+            	url="[controller: 'vote', action:'saveInShow']">
+                	<g:hiddenField name="user.id" value="" />
+                	<g:hiddenField name="value" value="1" />
+                	<g:hiddenField name="interactionContent.id" value="${answerInstance?.id}" />
+            	<button style="border:none; background-color:transparent;" type="submit" name="method_premium" value="">
+					<img src="${resource(dir: 'images', file: 'Up.png')}" alt="Home"/>
+		</button>
+		</g:formRemote>
+		</sec:ifLoggedIn>
+		</td></tr>
+		<tr><td id="noteValue${answerInstance?.id}" style="font-size: 26px;text-align: center;">${answerInstance?.getValeurVotes()}</td></tr>
+		<tr><td>
+		<sec:ifLoggedIn>
+			<g:formRemote name="myForm" on404="alert('not found!')" update="noteValue${answerInstance?.id}"
+	            	url="[controller: 'vote', action:'saveInShow']">
+	                 	<g:hiddenField name="user.id" value="" />
+	                 	<g:hiddenField name="value" value="-1" />
+	                 	<g:hiddenField name="interactionContent.id" value="${answerInstance?.id}" />
+	             	<button style="border:none; background-color:transparent;" type="submit" name="method_premium" value="">
+							<img src="${resource(dir: 'images', file: 'Down.png')}" alt="Home"/>
+				</button>
+			</g:formRemote>
+		</sec:ifLoggedIn>
+	</td></tr>
 	</table>
+	
 </div>
 				
 <div id="content" style="background-color: #eee;

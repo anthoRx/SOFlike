@@ -1,11 +1,12 @@
 <%@ page import="org.isima.Answer" %>
 <head>
-<g:javascript library="jquery" />
+
 	<resource:richTextEditor type="advanced" />
 </head>
 
 <div class="fieldcontain ${hasErrors(bean: answerInstance, field: 'content', 'error')} ">
-		<richui:richTextEditor name="contentAnswer" value="${fieldValue(bean:answerInstance, field:'content').decodeHTML()}" width="525" />
+		
+		<g:textField name="contentAnswer"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: answerInstance, field: 'creationDate', 'error')} required">
@@ -24,13 +25,7 @@
 	<g:select id="question" name="question.id" from="${org.isima.Question.list()}" optionKey="id" required="" value="${answerInstance?.question?.id}" class="many-to-one"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: answerInstance, field: 'user', 'error')} required">
-	<label for="user">
-		<g:message code="answer.user.label" default="User" />
-		<span class="required-indicator">*</span>
-	</label>
-	<g:select id="user" name="user.id" from="${org.isima.User.list()}" optionKey="id" required="" value="${answerInstance?.user?.id}" class="many-to-one"/>
-</div>
+
 
 <div class="fieldcontain ${hasErrors(bean: answerInstance, field: 'comments', 'error')} ">
 	<label for="comments">

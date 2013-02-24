@@ -16,8 +16,7 @@ class Badge {
     }
 	
 	
-	@Override String toString()
-	{
+	@Override String toString()	{
 		return this.name
 	}
 }

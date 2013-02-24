@@ -26,8 +26,14 @@ class GameService {
 		
 		if(configPoints) {
 			try {
+				// add points to the user
 				usr.points += configPoints
+				
+				// save modifications
 				usr.save(flush: true)
+				
+				// assign badges
+				assignBadgesToUser(usr)							
 			} catch(GroovyCastException e) {
 				log.error("Error in GameConfig file, values for points must be integers")
 			}
@@ -35,4 +41,20 @@ class GameService {
 		else
 			log.warn("Action \""+domain+"."+action+"\" doesn't find in game config.")
     }
+	
+	/**
+	 * This method assign badges to the user usr
+	 * 
+	 * @param usr The user who must be added the badges 
+	 * @return nothing
+	 */
+	def assignBadgesToUser(User usr) {
+		// Add badge(s) to the user if he has enough points
+		for(badge in Badge.getAll()) {
+			if(badge.pointsToObtain <= usr.points 
+					&& ! usr.badges.contains(badge))
+				usr.badges.add(badge)
+		}		
+		usr.save(flush: true)
+	}
 }

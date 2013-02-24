@@ -11,8 +11,4 @@ class Question extends InteractionContent {
     static constraints = {
     }
 	
-	def beforeInsert() {
-		Date date= new Date()
-		creationDate = date
-	}
 }

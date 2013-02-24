@@ -21,6 +21,14 @@ class QuestionController {
         [questionInstanceList: Question.list(params), questionInstanceTotal: Question.count()]
     }
 	
+	def listUnAnswered(Integer max) {
+		params.max = Math.min(max ?: 10, 100)
+		def questionInstanceList = Question.list(params)
+		questionInstanceList = questionInstanceList.findAll { e -> e.answers.size() == 0 }
+		
+		render(view: "list", model: [questionInstanceList: questionInstanceList, questionInstanceTotal: questionInstanceList.size()])
+	}
+	
 	
     def create() {
         [questionInstance: new Question(params)]

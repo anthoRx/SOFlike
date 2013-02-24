@@ -40,12 +40,12 @@
 		<div id="menu">
 			<table>
 				<tr>
-					<td><a href="">Questions</a></td>
-					<td><a href="">Tags</a></td>
+					<td><g:link controller='Question' action='list'>Questions</g:link></td>
+					<td><g:link controller='Tag' action='list'>Tags</g:link></td>
 					<td><g:link controller='User' action='list'>Users</g:link></td>
-					<td><a href="">Badges</a></td>
-					<td><a href="">Unanswered</a></td>
-					<td><a href="">Ask Question</a></td>
+					<td><g:link controller='Badge' action='list'>Badges</g:link></td>
+					<td><g:link controller='Question' action='listUnAnswered'>Unanswered</g:link></td>
+					<td><g:link controller='Question' action='create'>Ask Question</g:link></td>
 				</tr>
 			</table>
 		</div>

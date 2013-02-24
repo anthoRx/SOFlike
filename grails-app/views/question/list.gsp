@@ -61,12 +61,6 @@
 	</head>
 	<body>
 		<a href="#list-question" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
-			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-			</ul>
-		</div>
 		<div id="list-question" class="content scaffold-list" role="main">
 			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
 			<g:if test="${flash.message}">
@@ -85,15 +79,24 @@
 					</tr>
 					<tr>
 						<td/><td/><td/>
-						<td><table><tr><td>TAG 1</td><td>TAG 2</td><td>TAG 3</td></tr></table></td>
+						<td><table><tr>
+						<td>Tags : </td>
+						<td>
+						<g:if test="${questionInstance?.tags}">
+						<g:each in="${questionInstance.tags}" var="t">
+							<span><g:link controller="tag" action="show" id="${t.id}">${t?.encodeAsHTML()}</g:link></span>
+						</g:each>
+						<td>
+						</g:if>
+						</tr></table></td>
 						<td>by ${fieldValue(bean: questionInstance, field: "user")}</td>
 					</tr>
 					<tr style="background-color: transparent"><td></br></td></tr>
 			</table>
 			</g:each>
-			<div class="pagination">
+		</div>
+		<div class="pagination">
 				<g:paginate total="${questionInstanceTotal}" />
-			</div>
 		</div>
 	</body>
 </html>

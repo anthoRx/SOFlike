@@ -25,4 +25,9 @@ abstract class InteractionContent {
 		
 		return valVotes;
 	}
+	
+	def beforeInsert() {
+		Date date= new Date()
+		creationDate = date
+	}
 }

@@ -8,4 +8,8 @@ class Tag {
 	
     static constraints = {
     }
+	
+	@Override String toString() {
+		return name
+	}
 }

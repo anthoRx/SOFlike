@@ -36,6 +36,8 @@ class AnswerController {
 		questionInstance = Question.get(questionInstance);
 		//We inform the question
 		answerInstance.question = questionInstance
+		//We set the date
+		answerInstance.creationDate = new Date()
 		
 		if (!answerInstance.save(flush: true)) {
 			render(view: "create", model: [answerInstance: answerInstance])

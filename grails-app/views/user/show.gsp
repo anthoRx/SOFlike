@@ -123,25 +123,28 @@
 		
 		<div id="tabs">
 		  <ul>
-		  	<li><a href="#tabs-1">Summary</a></li>
 		    <li><a href="#tabs-2">Answers</a></li>
 		    <li><a href="#tabs-3">Questions</a></li>
 		    <li><a href="#tabs-4">Tags</a></li>
 		    <li><a href="#tabs-5">Badges</a></li>
 		    
 		  </ul>
-		  <div id="tabs-1">
-		    <p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.</p>
-		  </div>
-		  
 		  <div id="tabs-2">
-		 
+		   <g:each var="question" in="${questions}">
+		  		<g:if test="${question.answers?.size() > 0}">
+		  		<g:each var="answer" in="${questions?.answers}">
+					<g:link controller="question" action="show" id="${question.id}"><span>${question.title}</g:link></span>
+					</br>
+				</g:each>
+				</g:if>
+			</g:each>
 		  </div>
 		  
 		  <div id="tabs-3">
 		  <g:if test="${questions?.size() > 0}">
 		  	<g:each var="question" in="${questions}">
-				<g:link controller="question" action="show" id="${question.id}"><span>${question.content}</g:link> <i><g:formatDate format="'the' MM/dd/yyyy 'at' hh:ss" date="${question.creationDate}"/></i></span>
+				<g:link controller="question" action="show" id="${question.id}"><span>${question.title}</g:link> <i><g:formatDate format="'the' MM/dd/yyyy 'at' hh:ss" date="${question.creationDate}"/></i></span>
+				</br>
 			</g:each>
 		  </g:if>
 		  <g:else>
@@ -157,6 +160,7 @@
 		   <g:if test="${userInstance?.badges.size() > 0}">
 		  	<g:each var="badge" in="${userInstance?.badges}">
 				<span>${badge.name}</span>
+				</br>
 			</g:each>
 		  </g:if>
 		  <g:else>

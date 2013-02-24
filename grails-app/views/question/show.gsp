@@ -68,7 +68,7 @@
 				border-radius: 0.6em;
 				margin-left: 20%;">
 				<g:if test="${questionInstance?.content}">
-						<p><g:fieldValue bean="${questionInstance}" field="content"/></p>
+						<p>${questionInstance?.content.decodeHTML()}</p>
 				</g:if>
 				</div>
 				
@@ -104,15 +104,16 @@
 					<g:render template="/answer/answersByQuestion" model="['questionInstance':questionInstance]" />
 				
 				</div>	
-				
-				<g:formRemote name="myForm" on404="alert('not found!')" update="answers"
-              	url="[controller: 'answer', action:'saveInShow', params: [questionInstance: "${questionInstance?.id}"]]">
-						<g:include controller="answer" action="createInShow" />
-						<fieldset class="buttons">
-							<g:submitButton name="create" class="save" value="Add Answer" />
-						</fieldset>
-				</g:formRemote>
-				
+				<sec:ifLoggedIn>
+					<g:formRemote name="myForm" on404="alert('not found!')" update="answers"
+	              	url="[controller: 'answer', action:'saveInShow']">
+							<g:include controller="answer" action="createInShow" />
+							<g:hiddenField name="questionInstance" value="${questionInstance?.id}" />
+							<fieldset class="buttons">
+								<g:submitButton name="create" class="save" value="Add Answer" />
+							</fieldset>
+					</g:formRemote>
+				</sec:ifLoggedIn>
 				<g:form>
 					<fieldset class="buttons">
 						<g:hiddenField name="id" value="${questionInstance?.id}" />

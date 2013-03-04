@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 class Comment {
 	String content
-	Timestamp creationDate
+	Date creationDate
 	
 	static belongsTo = [interactionContent:InteractionContent]
 	

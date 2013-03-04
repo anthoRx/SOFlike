@@ -101,8 +101,7 @@
 				<br/>
 				<h1>Answers</h1>
 				<div id="answers">
-					<g:render template="/answer/answersByQuestion" model="['questionInstance':questionInstance]" />
-				
+					<g:render template="/answer/answersByQuestion" model="['questionInstance':questionInstance]" />				
 				</div>	
 				<sec:ifLoggedIn>
 					<g:formRemote name="myForm" on404="alert('not found!')" update="answers"

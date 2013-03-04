@@ -20,7 +20,7 @@ class UserService {
 	 **/
 	boolean hasPermission(instance) {
 		if (SpringSecurityUtils.ifAnyGranted("ROLE_ADMIN")
-		|| instance.user.id == springSecurityService.getCurrentUser().id) {
+		|| instance?.user.id == springSecurityService.getCurrentUser().id) {
 			return true
 		} else {
 			return false

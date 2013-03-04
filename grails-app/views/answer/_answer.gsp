@@ -10,8 +10,8 @@
                 	<g:hiddenField name="interactionContent.id" value="${answerInstance?.id}" />
             	<button style="border:none; background-color:transparent;" type="submit" name="method_premium" value="">
 					<img src="${resource(dir: 'images', file: 'Up.png')}" alt="Home"/>
-		</button>
-		</g:formRemote>
+				</button>
+				</g:formRemote>
 		</sec:ifLoggedIn>
 		</td></tr>
 		<tr><td id="noteValue${answerInstance?.id}" style="font-size: 26px;text-align: center;">${answerInstance?.getValeurVotes()}</td></tr>

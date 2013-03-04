@@ -133,7 +133,7 @@ class QuestionControllerTests {
         controller.update()
 
         assert response.redirectedUrl == "/question/show/$question.id"
-        assert flash.message != null
+        assert flash.message != null		
 
         //test outdated version number
         response.reset()

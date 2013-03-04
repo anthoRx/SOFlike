@@ -13,6 +13,7 @@ abstract class InteractionContent {
 	
     static constraints = {
 		content ( blank: false, maxSize: 50000, html: true )
+		versionings: nullable: false 	
     }
 	
 	int getValeurVotes()

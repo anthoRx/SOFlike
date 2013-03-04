@@ -11,6 +11,7 @@ class QuestionController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 	
 	def springSecurityService
+	def versioningService
 	
     def index() {
         redirect(action: "list", params: params)
@@ -92,14 +93,20 @@ class QuestionController {
                 return
             }
         }
-
+		
+		// Save the current content before try to save it
+		def oldContent = questionInstance.content
+		
         questionInstance.properties = params
-
+		
         if (!questionInstance.save(flush: true)) {
             render(view: "edit", model: [questionInstance: questionInstance])
             return
         }
-
+		
+		// Save the old content with the versionning feature
+		versioningService.versionContent(questionInstance,oldContent)
+		
         flash.message = message(code: 'default.updated.message', args: [message(code: 'question.label', default: 'Question'), questionInstance.id])
         redirect(action: "show", id: questionInstance.id)
     }

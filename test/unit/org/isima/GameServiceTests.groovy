@@ -11,7 +11,6 @@ import org.junit.*
 @Mock([User,Badge])
 class GameServiceTests {
 	
-	GameService gameService
 	User testUser
 	
 	@Before

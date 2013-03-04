@@ -9,5 +9,6 @@ class Versioning {
 	static belongsTo = [interactionContent:InteractionContent]
 	
     static constraints = {
+		content ( blank: false, maxSize: 50000, html: true )
     }
 }

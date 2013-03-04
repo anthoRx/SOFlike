@@ -15,9 +15,9 @@ class VersioningService {
     def versionContent(InteractionContent object, String oldContent) {
 		if(oldContent != null && !oldContent.isEmpty()) {
 			def date = new Timestamp(new Date().getTime())
-			def vers = new Versioning(content: oldContent, modificationDate: date)
-			object.versionings.add(vers);
-			return vers
+			def vers = new Versioning(content: oldContent, modificationDate: date, interactionContent: object)
+			vers.save(flush: true)
+			object.save(flush: true)			
 		}
     }
 }

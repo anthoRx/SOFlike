@@ -22,6 +22,11 @@ class QuestionControllerTests {
 			reauthenticate: { String u -> true},
 			loggedIn: true,
 			currentUser: loggedInUser]
+		
+		def mockService = mockFor(QuestionService)
+		mockService.demand.update(0..2) {Question object, String oldContent -> return true}
+		mockService.demand.incrementNbView(0..1) {Question object -> return true}
+		controller.questionService = mockService.createMock()
 	}
 	
     def populateValidParams(params) {
@@ -105,7 +110,7 @@ class QuestionControllerTests {
         assert model.questionInstance == question
     }
 
-    void testUpdate() {
+    void testUpdate() {		
         controller.update()
 
         assert flash.message != null

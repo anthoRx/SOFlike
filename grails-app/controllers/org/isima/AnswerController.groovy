@@ -6,6 +6,7 @@ class AnswerController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 	def springSecurityService
+	def answerService
 
     def index() {
         redirect(action: "list", params: params)
@@ -97,13 +98,19 @@ class AnswerController {
                 return
             }
         }
-
+		
+		// We keep the current content before try to save it
+		def oldContent = answerInstance.content
+		
         answerInstance.properties = params
 
         if (!answerInstance.save(flush: true)) {
             render(view: "edit", model: [answerInstance: answerInstance])
             return
         }
+		
+		// Save the old content with the versionning feature
+		answerService.update(answerInstance,oldContent)
 
         flash.message = message(code: 'default.updated.message', args: [message(code: 'answer.label', default: 'Answer'), answerInstance.id])
         redirect(action: "show", id: answerInstance.id)

@@ -10,7 +10,14 @@ import java.sql.Timestamp
 @TestFor(AnswerController)
 @Mock([Answer,User,Question])
 class AnswerControllerTests {
-		
+	
+	@Before
+	void setUp() {		
+		def mockService = mockFor(AnswerService)
+		mockService.demand.update(0..2) {Answer object, String oldContent -> return true}
+		controller.answerService = mockService.createMock()
+	}
+	
     def populateValidParams(params) {
         assert params != null
 		
@@ -97,7 +104,7 @@ class AnswerControllerTests {
         assert model.answerInstance == answer
     }
 
-    void testUpdate() {
+    void testUpdate() {				
         controller.update()
 
         assert flash.message != null

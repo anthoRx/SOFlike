@@ -19,22 +19,19 @@ class VersioningServiceTests {
 		def date = new Timestamp(new Date().getTime())
 			
 		def question = new Question(title: 'Should I buy a boat ??', nbView: 10, content: 'That is the question', creationDate: date)
-		question.versionings = new HashSet<Versioning>()
 		question.save(flush: true)		
 		
 		def vers = service.versionContent(question,oldContent)
 		
-		assert question.versionings.size() == 1
-		assert question.versionings.contains(vers) == true
+		assert Versioning.count == 1
 		
-		vers = service.versionContent(question,oldContent2)
+		vers = service.versionContent(question,oldContent2)		
 		
-		assert question.versionings.size() == 2
-		assert question.versionings.contains(vers) == true
+		assert Versioning.count == 2
 		
 		vers = service.versionContent(question,null)
 		vers = service.versionContent(question,"")
 		
-		assert question.versionings.size() == 2
+		assert Versioning.count == 2
     }
 }

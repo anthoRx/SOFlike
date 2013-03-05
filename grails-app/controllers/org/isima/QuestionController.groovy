@@ -1,5 +1,6 @@
 package org.isima
 
+import java.security.Security;
 import java.sql.Timestamp
 import org.springframework.dao.DataIntegrityViolationException
 import grails.plugins.springsecurity.Secured
@@ -11,6 +12,7 @@ class QuestionController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 	
 	def springSecurityService
+	def userService
 	def questionService
 	
     def index() {
@@ -30,11 +32,20 @@ class QuestionController {
 		render(view: "list", model: [questionInstanceList: questionInstanceList, questionInstanceTotal: questionInstanceList.size()])
 	}
 	
-	
+	/**
+	 * 
+	 * @return
+	 */
+	@Secured(['ROLE_USER'])
     def create() {
         [questionInstance: new Question(params)]
     }
-
+	
+	/**
+	 * 
+	 * @return
+	 */
+	@Secured(['ROLE_USER'])
     def save() {
         def questionInstance = new Question(params)
 		def date= new Date()
@@ -53,7 +64,12 @@ class QuestionController {
         flash.message = message(code: 'default.created.message', args: [message(code: 'question.label', default: 'Question'), questionInstance.id])
         redirect(action: "show", id: questionInstance.id)
     }
-
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
     def show(Long id) {
         def questionInstance = Question.get(id)
         if (!questionInstance) {
@@ -65,8 +81,21 @@ class QuestionController {
         [questionInstance: questionInstance ]
     }
 
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
     def edit(Long id) {
         def questionInstance = Question.get(id)
+		
+		// Check if the user can update the question (only for the owner or an admin)
+		if(!userService.hasPermission(questionInstance)) {
+			flash.message = message(code: 'security.not.authorized')
+			redirect(action: "list")
+			return
+		}
+		
         if (!questionInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'question.label', default: 'Question'), id])
             redirect(action: "list")
@@ -78,6 +107,14 @@ class QuestionController {
 
     def update(Long id, Long version) {
         def questionInstance = Question.get(id)
+		
+		// Check if the user can update the question (only for the owner or an admin)
+		if(!userService.hasPermission(questionInstance)) {
+			flash.message = message(code: 'security.not.authorized')
+			redirect(action: "list")
+			return 
+		}
+		
         if (!questionInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'question.label', default: 'Question'), id])
             redirect(action: "list")
@@ -113,6 +150,14 @@ class QuestionController {
 
     def delete(Long id) {
         def questionInstance = Question.get(id)
+		
+		// Check if the user can delete the question (only for the owner or an admin)
+		if(!userService.hasPermission(questionInstance)) {
+			flash.message = message(code: 'security.not.authorized')
+			redirect(action: "list")
+			return
+		}
+		
         if (!questionInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'question.label', default: 'Question'), id])
             redirect(action: "list")

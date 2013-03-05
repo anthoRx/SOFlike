@@ -83,10 +83,20 @@
 				<div id="bottom" align="center" style="margin-left: 20%;">
 				<table>
 				<tr>
-				<td style="width: 33%;">Edit</td>
+				<td style="width: 33%;">
+					<sec:ifAuthorized value="${questionInstance}">
+						<g:form>
+							<fieldset class="buttons">
+								<g:hiddenField name="id" value="${questionInstance?.id}" />
+								<g:link class="edit" action="edit" id="${questionInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
+								<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+							</fieldset>
+						</g:form>
+					</sec:ifAuthorized>
+				</td>
 				<td style="width: 33%;">
 					<g:if test="${questionInstance?.creationDate}">
-						<span><g:fieldValue bean="${questionInstance}" field="creationDate"/></span>
+						<span>asked <g:formatDate format="MMM	''yy 'at' k:m" date="${questionInstance?.creationDate}" locale="EN_en"/></span>
 					</g:if>
 				</td>
 				<td style="width: 33%;text-align:center;">
@@ -99,10 +109,11 @@
 				</table>
 				</div>
 				<br/>
-				<h1>Answers</h1>
+				
 				<div id="answers">
 					<g:render template="/answer/answersByQuestion" model="['questionInstance':questionInstance]" />				
-				</div>	
+				</div>
+				
 				<sec:ifLoggedIn>
 					<g:formRemote name="myForm" on404="alert('not found!')" update="answers"
 	              	url="[controller: 'answer', action:'saveInShow']">
@@ -112,18 +123,7 @@
 								<g:submitButton name="create" class="save" value="Add Answer" />
 							</fieldset>
 					</g:formRemote>
-				</sec:ifLoggedIn>
-				
-				
-				<sec:ifAuthorized value="${questionInstance}">
-					<g:form>
-						<fieldset class="buttons">
-							<g:hiddenField name="id" value="${questionInstance?.id}" />
-							<g:link class="edit" action="edit" id="${questionInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
-							<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-						</fieldset>
-					</g:form>
-				</sec:ifAuthorized>
+				</sec:ifLoggedIn>					
 		</div>
 	</body>
 </html>

@@ -23,10 +23,12 @@ class QuestionControllerTests {
 			loggedIn: true,
 			currentUser: loggedInUser]
 		
-		def mockService = mockFor(QuestionService)
-		mockService.demand.update(0..2) {Question object, String oldContent -> return true}
-		mockService.demand.incrementNbView(0..1) {Question object -> return true}
-		controller.questionService = mockService.createMock()
+		def mockQuestionService = mockFor(QuestionService)
+		mockQuestionService.demand.update(0..2) {Question object, String oldContent -> return true}
+		mockQuestionService.demand.incrementNbView(0..1) {Question object -> return true}
+		controller.questionService = mockQuestionService.createMock()
+		
+		controller.userService = [hasPermission: {instance -> true}]		
 	}
 	
     def populateValidParams(params) {

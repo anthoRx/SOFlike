@@ -12,8 +12,7 @@
 				border: .2em solid #fff;
 				margin: 2em 2em 1em;
 				padding: 1em;
-				width: 80%;
-				float: left;
+				width: 92%;
 				-moz-box-shadow: 0px 0px 1.25em #ccc;
 				-webkit-box-shadow: 0px 0px 1.25em #ccc;
 				box-shadow: 0px 0px 1.25em #ccc;
@@ -61,13 +60,18 @@
 	</head>
 	<body>
 		<a href="#list-question" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
+		
 		<div id="list-question" class="content scaffold-list" role="main">
 			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
+			
 			<g:if test="${flash.message}">
-			<div class="message" role="status">${flash.message}</div>
+				<div class="message" role="status">${flash.message}</div>
 			</g:if>
+		</div>
+		
+		<div> 	
 			<g:each in="${questionInstanceList}" status="i" var="questionInstance">
-			<table id="question">	
+				<table id="question">	
 					<tr>
 						<td>${questionInstance.getVotes().size()} Votes</td>
 					
@@ -75,26 +79,26 @@
 					
 						<td>${questionInstance.getAnswers().size()} answer(s)</td>
 					
-						<td><g:link action="show" id="${questionInstance.id}">${fieldValue(bean: questionInstance, field: "title")}</g:link></td>
+						<td width="60%"><g:link action="show" id="${questionInstance.id}">${fieldValue(bean: questionInstance, field: "title")}</g:link></td>
 					</tr>
 					<tr>
-						<td/><td/><td/>
-						<td><table><tr>
-						<td>Tags : </td>
-						<td>
-						<g:if test="${questionInstance?.tags}">
-						<g:each in="${questionInstance.tags}" var="t">
-							<span><g:link controller="tag" action="show" id="${t.id}">${t?.encodeAsHTML()}</g:link></span>
-						</g:each>
-						<td>
-						</g:if>
-						</tr></table></td>
-						<td>by ${fieldValue(bean: questionInstance, field: "user")}</td>
+						<td colspan="3">
+							<span>asked <g:formatDate format="MMM	''yy 'at' k:mm" date="${questionInstance?.creationDate}" locale="EN_en"/></span>
+							by ${fieldValue(bean: questionInstance, field: "user")}
+						</td>
+						<td>Tags :
+							<g:if test="${questionInstance?.tags}">
+							<g:each in="${questionInstance.tags}" var="t">
+								<span><g:link controller="tag" action="show" id="${t.id}">${t?.encodeAsHTML()}</g:link></span>
+							</g:each>
+							</g:if>
+						</td>
 					</tr>
-					<tr style="background-color: transparent"><td></br></td></tr>
-			</table>
+				</table>
 			</g:each>
+			
 		</div>
+		
 		<div class="pagination">
 				<g:paginate total="${questionInstanceTotal}" />
 		</div>

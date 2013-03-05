@@ -9,10 +9,7 @@
 	<body>
 		<a href="#create-answer" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div id="create-answer" class="content scaffold-create" role="main">
-			<h1>Add Answer</h1>
-			<g:if test="${flash.message}">
-			<div class="message" role="status">${flash.message}</div>
-			</g:if>
+			<h1>Your Answer</h1>
 			<g:hasErrors bean="${answerInstance}">
 			<ul class="errors" role="alert">
 				<g:eachError bean="${answerInstance}" var="error">

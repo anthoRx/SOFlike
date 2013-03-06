@@ -37,13 +37,13 @@ class CommentController {
 		//We retrieve the answer
 		def answerInstance = Answer.findById(params.answerInstance);
 		commentInstance.interactionContent = answerInstance
-
 		if (!commentInstance.save(flush: true)) {
-			render(view: "create", model: [commentInstance: commentInstance])
+            flash.message ="The comment wasn't be created"
+			render(template: "commentsByIE", model: [ieInstance: answerInstance])
 			return
 		}
 
-		render(template: "commentsByQuestion", model: [answerInstance: answerInstance])
+		render(template: "commentsByIE", model: [ieInstance: answerInstance])
 	}
 
     def show(Long id) {

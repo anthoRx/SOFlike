@@ -1,0 +1,13 @@
+.usual_tag {
+	border-style: solid;
+	border-color: #3BA3E8;
+	border-width: thin;
+	background-color:rgb(233,242,255);
+	padding: 2px 4px 2px 4px;
+}
+
+.usual_tag a {
+	color: #1194EB;
+	text-decoration: none;
+	font-size: smaller;
+}

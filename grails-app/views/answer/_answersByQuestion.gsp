@@ -1,25 +1,8 @@
-<head>
-	<g:javascript library="jquery" />
-</head>
 
-<g:if test="${questionInstance?.answers}">
-	<h1>Answers</h1>
-	<g:each in="${questionInstance.answers}" var="answerInstance">
-		<g:render template="/answer/answer" model="['answerInstance': answerInstance]" />
-		<div id="comments${answerInstance?.id}">
-			<g:render template="/comment/commentsByQuestion" model="['answerInstance':answerInstance]" />
-		</div>
-		
-		<sec:ifLoggedIn>
-				<button  name="addComment" value="Add Comment" onclick="showAddComment(${answerInstance?.id})">Add Comment</button>
-		</sec:ifLoggedIn>	
+<g:each in="${questionInstance?.answers}" var="answerInstance"> 
+	<g:render template="/answer/answer" model="['answerInstance':answerInstance]" />		
 	<br/>
-	</g:each>
+</g:each>	
+<g:if test="${flash.message}">
+		<div class="message" role="status">${flash.message}</div>
 </g:if>
-
-<script>
-	function showAddComment(id)
-	{
-		document.getElementById('addComment'+id).style.display='block';
-	}
-</script>

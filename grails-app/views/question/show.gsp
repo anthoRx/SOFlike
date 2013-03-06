@@ -5,8 +5,11 @@
 	<head>
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'question.label', default: 'Question')}" />
+		<link rel="stylesheet" href="${resource(dir: 'css', file: 'tag.css')}" type="text/css" />
+		
 		<title><g:message code="default.show.label" args="[entityName]" /></title>	
 		<g:javascript library="jquery" />
+		
 	</head>
 	<body>
 		<a href="#show-question" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
@@ -72,12 +75,12 @@
 				</g:if>
 				</div>
 				
-				<div id="tags">
-				<g:if test="${questionInstance?.tags}">
-						<g:each in="${questionInstance.tags}" var="t">
-							<span><g:link controller="tag" action="show" id="${t.id}">${t?.encodeAsHTML()}</g:link></span>
-						</g:each>
-				</g:if>
+				<div id="tags" style="margin-left: 20%;">
+					<g:if test="${questionInstance?.tags}">
+							<g:each in="${questionInstance.tags}" var="t">
+								<span class="usual_tag"><g:link controller="tag" action="show" id="${t.id}">${t?.encodeAsHTML()}</g:link></span>
+							</g:each>
+					</g:if>
 				</div>
 				
 				<div id="bottom" align="center" style="margin-left: 20%;">
@@ -110,20 +113,23 @@
 				</div>
 				<br/>
 				
-				<div id="answers">
-					<g:render template="/answer/answersByQuestion" model="['questionInstance':questionInstance]" />				
-				</div>
+				<g:if test="${questionInstance?.answers}">
+					<h1>Answers</h1>
+					<div id="answers">
+						<g:render template="/answer/answersByQuestion" model="['questionInstance':questionInstance]" />			
+					</div>
+				</g:if>
+				<br/>
 				
 				<sec:ifLoggedIn>
-					<g:formRemote name="myForm" on404="alert('not found!')" update="answers"
-	              	url="[controller: 'answer', action:'saveInShow']">
-							<g:include controller="answer" action="createInShow" />
-							<g:hiddenField name="questionInstance" value="${questionInstance?.id}" />
-							<fieldset class="buttons">
-								<g:submitButton name="create" class="save" value="Add Answer" />
-							</fieldset>
+					<g:formRemote name="myForm" on404="alert('not found!')" update="answers" url="[controller: 'answer', action:'saveInShow']">						
+						<g:render template="/answer/createInShow"  />
+						<g:hiddenField name="questionInstance" value="${questionInstance?.id}" />
+						<fieldset class="buttons">
+							<g:submitButton name="create" class="save" value="Add Answer" />
+						</fieldset>
 					</g:formRemote>
-				</sec:ifLoggedIn>					
+				</sec:ifLoggedIn>		
 		</div>
 	</body>
 </html>

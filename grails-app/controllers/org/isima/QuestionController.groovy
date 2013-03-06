@@ -36,7 +36,7 @@ class QuestionController {
 	 * 
 	 * @return
 	 */
-	@Secured(['ROLE_USER'])
+	@Secured(['ROLE_USER','ROLE_ADMIN'])
     def create() {
         [questionInstance: new Question(params)]
     }
@@ -45,7 +45,7 @@ class QuestionController {
 	 * 
 	 * @return
 	 */
-	@Secured(['ROLE_USER'])
+	@Secured(['ROLE_USER','ROLE_ADMIN'])
     def save() {
         def questionInstance = new Question(params)
 		def date= new Date()

@@ -1,71 +1,106 @@
 <div>
-<div id="vote" style="float: left;margin-left: 5%; margin-top: 2%;">
-	<table>
-	<tr><td>
-		<sec:ifLoggedIn>
-            	<g:formRemote name="myForm" on404="alert('not found!')" update="noteValue${answerInstance?.id}"
-            	url="[controller: 'vote', action:'saveInShow']">
-                	<g:hiddenField name="user.id" value="" />
-                	<g:hiddenField name="value" value="1" />
-                	<g:hiddenField name="interactionContent.id" value="${answerInstance?.id}" />
-            	<button style="border:none; background-color:transparent;" type="submit" name="method_premium" value="">
-					<img src="${resource(dir: 'images', file: 'Up.png')}" alt="Home"/>
-				</button>
-				</g:formRemote>
-		</sec:ifLoggedIn>
-		</td></tr>
-		<tr><td id="noteValue${answerInstance?.id}" style="font-size: 26px;text-align: center;">${answerInstance?.getValeurVotes()}</td></tr>
-		<tr><td>
-		<sec:ifLoggedIn>
-			<g:formRemote name="myForm" on404="alert('not found!')" update="noteValue${answerInstance?.id}"
-	            	url="[controller: 'vote', action:'saveInShow']">
-	                 	<g:hiddenField name="user.id" value="" />
-	                 	<g:hiddenField name="value" value="-1" />
-	                 	<g:hiddenField name="interactionContent.id" value="${answerInstance?.id}" />
-	             	<button style="border:none; background-color:transparent;" type="submit" name="method_premium" value="">
-							<img src="${resource(dir: 'images', file: 'Down.png')}" alt="Home"/>
-				</button>
-			</g:formRemote>
-		</sec:ifLoggedIn>
-	</td></tr>
-	</table>
+	<div id="vote" style="float: left;margin-left: 5%; ">
+		<table>
+			<tr>
+				<td>
+					<sec:ifLoggedIn>
+			            	<g:formRemote name="myForm" on404="alert('not found!')" update="noteValue${answerInstance?.id}"
+			            	url="[controller: 'vote', action:'saveInShow']">
+			                	<g:hiddenField name="user.id" value="" />
+			                	<g:hiddenField name="value" value="1" />
+			                	<g:hiddenField name="interactionContent.id" value="${answerInstance?.id}" />
+			            	<button style="border:none; background-color:transparent;" type="submit" name="method_premium" value="">
+								<img src="${resource(dir: 'images', file: 'Up.png')}" alt="Home"/>
+							</button>
+							</g:formRemote>
+					</sec:ifLoggedIn>
+				</td>
+			</tr>
+			<tr>
+				<td id="noteValue${answerInstance?.id}" style="font-size: 26px;text-align: center;">${answerInstance?.getValeurVotes()}</td>
+			</tr>
+			<tr>
+				<td>
+					<sec:ifLoggedIn>
+						<g:formRemote name="myForm" on404="alert('not found!')" update="noteValue${answerInstance?.id}"
+				            	url="[controller: 'vote', action:'saveInShow']">
+				                 	<g:hiddenField name="user.id" value="" />
+				                 	<g:hiddenField name="value" value="-1" />
+				                 	<g:hiddenField name="interactionContent.id" value="${answerInstance?.id}" />
+				             	<button style="border:none; background-color:transparent;" type="submit" name="method_premium" value="">
+										<img src="${resource(dir: 'images', file: 'Down.png')}" alt="Home"/>
+							</button>
+						</g:formRemote>
+					</sec:ifLoggedIn>
+				</td>
+			</tr>
+		</table>
+		
+	</div>
+					
+	<div id="content" style="background-color: #eee;
+	border: .2em solid #fff;
+	margin: 2em 2em 1em;
+	padding: 1em;
 	
-</div>
-				
-<div id="content" style="background-color: #eee;
-border: .2em solid #fff;
-margin: 2em 2em 1em;
-padding: 1em;
-
--moz-box-shadow: 0px 0px 1.25em #ccc;
--webkit-box-shadow: 0px 0px 1.25em #ccc;
-box-shadow: 0px 0px 1.25em #ccc;
--moz-border-radius: 0.6em;
--webkit-border-radius: 0.6em;
-border-radius: 0.6em;
-margin-left: 20%;">
-<g:if test="${answerInstance?.content}">
-		<p><g:fieldValue bean="${answerInstance}" field="content"/></p>
-</g:if>
-</div>
-	
-<div id="bottom" align="center" style="margin-left: 20%;">
-	<table>
-	<tr>
-	<td style="width: 33%;">Edit</td>
-	<td style="width: 33%;">
-		<g:if test="${answerInstance?.creationDate}">
-			<span><g:fieldValue bean="${answerInstance}" field="creationDate"/></span>
-		</g:if>
-	</td>
-	<td style="width: 33%;text-align:center;">
-	<g:if test="${answerInstance?.user}">
-		<g:link controller="user" action="show" id="${answerInstance?.user?.id}">${answerInstance?.user?.encodeAsHTML()}</g:link>		
+	-moz-box-shadow: 0px 0px 1.25em #ccc;
+	-webkit-box-shadow: 0px 0px 1.25em #ccc;
+	box-shadow: 0px 0px 1.25em #ccc;
+	-moz-border-radius: 0.6em;
+	-webkit-border-radius: 0.6em;
+	border-radius: 0.6em;
+	margin-left: 20%;">
+	<g:if test="${answerInstance?.content}">
+			<p><g:fieldValue bean="${answerInstance}" field="content"/></p>
 	</g:if>
+	</div>
+		
+	<div id="bottom" align="center" style="margin-left: 20%;">
+		<table>
+			<tr>
+				<td style="width: 33%;">
+					Edit | 
+					<sec:ifLoggedIn>
+						<button  name="addComment" value="Comment" onclick="showAddComment(${answerInstance?.id})">Comment</button>
+					</sec:ifLoggedIn>
+				</td>
+				<td style="width: 33%;">
+					<g:if test="${answerInstance?.creationDate}">
+						<span><g:fieldValue bean="${answerInstance}" field="creationDate"/></span>
+					</g:if>
+				</td>
+				<td style="width: 33%;text-align:center;">
+					<g:if test="${answerInstance?.user}">
+						<g:link controller="user" action="show" id="${answerInstance?.user?.id}">${answerInstance?.user?.encodeAsHTML()}</g:link>		
+					</g:if>		
+				</td>
+			</tr>
+		</table>
+	</div>		
+	
+	<div id="comments${answerInstance?.id}">
+		<g:render template="/comment/commentsByIE" model="['ieInstance':answerInstance]" />				
+	</div>		
+	
+	
+	<div id="addComment${answerInstance?.id}" style="display: none">
+		<g:formRemote name="myForm" on404="alert('not found!')" update="comments${answerInstance?.id}"
+	            	url="[controller: 'comment', action:'saveInShow', params: [answerInstance: "${answerInstance?.id}"]]">
+			<g:render template="/comment/createInShow"  />
+			<fieldset class="buttons">
+				<g:submitButton name="create" class="save" value="Add Comment" />
+			</fieldset>
+		</g:formRemote>
+	</div>
+	
 
-	</td>
-	</tr>
-	</table>
+	<script>
+		function showAddComment(id)
+		{
+			document.getElementById('addComment'+id).style.display='block';
+		}
+	</script>
 </div>
-<br/>
-</div>
+
+
+		

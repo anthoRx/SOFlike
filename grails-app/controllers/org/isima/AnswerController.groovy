@@ -21,9 +21,6 @@ class AnswerController {
         [answerInstance: new Answer(params)]
     }
 	
-	def createInShow() {
-		[answerInstance: new Answer(params)]
-	}
 	
 	def saveInShow() {
 		def answerInstance = new Answer(params)
@@ -41,7 +38,8 @@ class AnswerController {
 		answerInstance.creationDate = new Date()
 		
 		if (!answerInstance.save(flush: true)) {
-			render(view: "create", model: [answerInstance: answerInstance])
+            flash.message ="The answer wasn't be created"
+			render(template: "answersByQuestion", model: [questionInstance: questionInstance])
 			return
 		}
 

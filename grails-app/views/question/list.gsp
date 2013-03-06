@@ -6,6 +6,7 @@
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'question.label', default: 'Question')}" />
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
+		<link rel="stylesheet" href="${resource(dir: 'css', file: 'tag.css')}" type="text/css"/>
 		<style type="text/css" media="screen">
 			#question {
 				background-color: #eee;
@@ -86,11 +87,11 @@
 							<span>asked <g:formatDate format="MMM	''yy 'at' k:mm" date="${questionInstance?.creationDate}" locale="EN_en"/></span>
 							by ${fieldValue(bean: questionInstance, field: "user")}
 						</td>
-						<td>Tags :
+						<td>
 							<g:if test="${questionInstance?.tags}">
-							<g:each in="${questionInstance.tags}" var="t">
-								<span><g:link controller="tag" action="show" id="${t.id}">${t?.encodeAsHTML()}</g:link></span>
-							</g:each>
+								<g:each in="${questionInstance.tags}" var="t">
+									<span class="usual_tag"><g:link controller="tag" action="show" id="${t.id}">${t?.encodeAsHTML()}</g:link></span>
+								</g:each>
 							</g:if>
 						</td>
 					</tr>

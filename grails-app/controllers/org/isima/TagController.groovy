@@ -1,10 +1,13 @@
 package org.isima
 
 import org.springframework.dao.DataIntegrityViolationException
+import grails.plugins.springsecurity.Secured
 
 class TagController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+	
+	def springSecurityService
 	
     def index() {
         redirect(action: "list", params: params)
@@ -14,11 +17,13 @@ class TagController {
         params.max = Math.min(max ?: 10, 100)
         [tagInstanceList: Tag.list(params), tagInstanceTotal: Tag.count()]
     }
-
+	
+	@Secured(['ROLE_USER','ROLE_ADMIN'])
     def create() {
         [tagInstance: new Tag(params)]
     }
-
+	
+	@Secured(['ROLE_USER','ROLE_ADMIN'])
     def save() {
         def tagInstance = new Tag(params)
         if (!tagInstance.save(flush: true)) {
@@ -40,7 +45,8 @@ class TagController {
 
         [tagInstance: tagInstance]
     }
-
+	
+	@Secured(['ROLE_ADMIN'])
     def edit(Long id) {
         def tagInstance = Tag.get(id)
         if (!tagInstance) {
@@ -52,6 +58,7 @@ class TagController {
         [tagInstance: tagInstance]
     }
 
+	@Secured(['ROLE_ADMIN'])
     def update(Long id, Long version) {
         def tagInstance = Tag.get(id)
         if (!tagInstance) {
@@ -80,7 +87,13 @@ class TagController {
         flash.message = message(code: 'default.updated.message', args: [message(code: 'tag.label', default: 'Tag'), tagInstance.id])
         redirect(action: "show", id: tagInstance.id)
     }
-
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@Secured(['ROLE_ADMIN'])
     def delete(Long id) {
         def tagInstance = Tag.get(id)
         if (!tagInstance) {

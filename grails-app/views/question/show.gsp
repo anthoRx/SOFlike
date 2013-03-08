@@ -113,12 +113,15 @@
 				</div>
 				<br/>
 				
-				<g:if test="${questionInstance?.answers}">
-					<h1>Answers</h1>
-					<div id="answers">
-						<g:render template="/answer/answersByQuestion" model="['questionInstance':questionInstance]" />			
-					</div>
-				</g:if>
+				<h1>Answers</h1>	
+				<div id="answers">
+					<g:if test="${questionInstance?.answers}">					
+						<g:render template="/answer/answersByQuestion" model="['questionInstance':questionInstance]" />
+					</g:if>
+					<g:else>
+						<br/><br/><br/><br/>
+					</g:else>
+				</div>
 				<br/>
 				
 				<sec:ifLoggedIn>

@@ -59,14 +59,20 @@
 		<table>
 			<tr>
 				<td style="width: 33%;">
-					Edit | 
+					<g:form controller="answer" method="post">
+						<fieldset class="buttons">
+							<g:hiddenField name="id" value="${answerInstance?.id}" />
+							<g:actionSubmit class="edit" action="edit" value="${message(code: 'default.button.edit.label', default: 'Edit')}" />
+							<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+						</fieldset>
+					</g:form>
 					<sec:ifLoggedIn>
 						<button  name="addComment" value="Comment" onclick="showAddComment(${answerInstance?.id})">Comment</button>
 					</sec:ifLoggedIn>
 				</td>
 				<td style="width: 33%;">
 					<g:if test="${answerInstance?.creationDate}">
-						<span><g:fieldValue bean="${answerInstance}" field="creationDate"/></span>
+						<span>answered <g:formatDate format="MMM	''yy 'at' k:m" date="${answerInstance?.creationDate}" locale="EN_en"/></span>
 					</g:if>
 				</td>
 				<td style="width: 33%;text-align:center;">

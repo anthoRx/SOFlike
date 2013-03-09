@@ -91,7 +91,7 @@
 	
 	<div id="addComment${answerInstance?.id}" style="display: none">
 		<g:formRemote name="myForm" on404="alert('not found!')" update="comments${answerInstance?.id}"
-	            	url="[controller: 'comment', action:'saveInShow', params: [answerInstance: "${answerInstance?.id}"]]">
+	            	url="[controller: 'comment', action:'saveInShow', params: [ieId: "${answerInstance?.id}"]]">
 			<g:render template="/comment/createInShow"  />
 			<fieldset class="buttons">
 				<g:submitButton name="create" class="save" value="Add Comment" />

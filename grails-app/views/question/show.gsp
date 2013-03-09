@@ -16,15 +16,16 @@
 
 		<div id="show-question" class="content scaffold-show" role="main">
 			<h1>${questionInstance?.title}</h1>
+			<sec:ifAuthorized value="${questionInstance}">
+				<g:form>
+					<g:hiddenField name="id" value="${questionInstance?.id}" />
+					<g:link class="edit" action="edit" id="${questionInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
+					<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />								
+				</g:form>
+			</sec:ifAuthorized>
 			<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
-
-				<g:if test="${questionInstance?.comments}">
-						<g:each in="${questionInstance.comments}" var="c">
-						<span class="property-value" aria-labelledby="comments-label"><g:link controller="comment" action="show" id="${c.id}">${c?.encodeAsHTML()}</g:link></span>
-						</g:each>
-				</g:if>
 			
 				<div id="vote" style="float: left;margin-left: 5%; margin-top: 2%;">
 					<table>
@@ -82,37 +83,53 @@
 							</g:each>
 					</g:if>
 				</div>
-				
+				<br/>
 				<div id="bottom" align="center" style="margin-left: 20%;">
 				<table>
 				<tr>
-				<td style="width: 33%;">
-					<sec:ifAuthorized value="${questionInstance}">
-						<g:form>
-							<fieldset class="buttons">
-								<g:hiddenField name="id" value="${questionInstance?.id}" />
-								<g:link class="edit" action="edit" id="${questionInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
-								<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-							</fieldset>
-						</g:form>
-					</sec:ifAuthorized>
-				</td>
-				<td style="width: 33%;">
-					<g:if test="${questionInstance?.creationDate}">
-						<span>asked <g:formatDate format="MMM	''yy 'at' k:m" date="${questionInstance?.creationDate}" locale="EN_en"/></span>
+					<td style="width: 33%;">						
+						<sec:ifLoggedIn>
+							<a href="#qComments${questionInstance?.id}" onclick="showAddQcomment(${questionInstance?.id})">Comment</a>
+						</sec:ifLoggedIn>
+					</td>
+					<td style="width: 33%;">
+						<g:if test="${questionInstance?.creationDate}">
+							<span>asked <g:formatDate format="MMM	''yy 'at' k:m" date="${questionInstance?.creationDate}" locale="EN_en"/></span>
+						</g:if>
+					</td>
+					<td style="width: 33%;text-align:center;">
+					<g:if test="${questionInstance?.user}">
+						<g:link controller="user" action="show" id="${questionInstance?.user?.id}">${questionInstance?.user?.encodeAsHTML()}</g:link>		
 					</g:if>
-				</td>
-				<td style="width: 33%;text-align:center;">
-				<g:if test="${questionInstance?.user}">
-					<g:link controller="user" action="show" id="${questionInstance?.user?.id}">${questionInstance?.user?.encodeAsHTML()}</g:link>		
-				</g:if>
-			
-				</td>
+				
+					</td>
 				</tr>
 				</table>
 				</div>
 				<br/>
 				
+				
+				<div id="qComments${questionInstance?.id}">
+					<g:render template="/comment/commentsByIE" model="['ieInstance':questionInstance]" />				
+				</div>
+				
+				<div id="addQcomment${questionInstance?.id}" style="display: none">
+					<g:formRemote name="myForm" on404="alert('not found!')" update="qComments${questionInstance?.id}"
+				            	url="[controller: 'comment', action:'saveInShow', params: [ieId: "${questionInstance?.id}"]]">
+						<g:render template="/comment/createInShow"  />
+						<fieldset class="buttons">
+							<g:submitButton name="create" class="save" value="Add Comment" />
+						</fieldset>
+					</g:formRemote>
+				</div>
+	
+
+	<script>
+		function showAddQcomment(id)
+		{
+			document.getElementById('addQcomment'+id).style.display='block';
+		}
+	</script>
 				<h1>Answers</h1>	
 				<div id="answers">
 					<g:if test="${questionInstance?.answers}">					

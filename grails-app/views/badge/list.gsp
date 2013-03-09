@@ -23,7 +23,8 @@
 						<g:sortableColumn property="name" title="${message(code: 'badge.name.label', default: 'Name')}" />
 					
 						<g:sortableColumn property="pointsToObtain" title="${message(code: 'badge.pointsToObtain.label', default: 'Points To Obtain')}" />
-					
+						
+						<th>${message(code: 'badge.nbUsers.label', default: 'Number of owners')} </th>
 					</tr>
 				</thead>
 				<tbody>
@@ -33,6 +34,8 @@
 						<td><g:link action="show" id="${badgeInstance.id}">${fieldValue(bean: badgeInstance, field: "name")}</g:link></td>
 					
 						<td>${fieldValue(bean: badgeInstance, field: "pointsToObtain")}</td>
+						
+						<td>${badgeInstance.users.size()}</td>
 					
 					</tr>
 				</g:each>

@@ -24,7 +24,11 @@ abstract class InteractionContent implements Comparable<InteractionContent> {
 	
 	//CompareTo method to have the more voted answer first
 	int compareTo(InteractionContent other) {
-		return  other.getValeurVotes() <=> getValeurVotes()
+		int pos =  other.getValeurVotes() <=> getValeurVotes()
+		if(pos == 0)
+			pos = creationDate <=> other.creationDate
+		
+		return pos
 	}
  
 	

@@ -72,6 +72,8 @@ class QuestionController {
 	 */
     def show(Long id) {
         def questionInstance = Question.get(id)
+		//Sort the answers
+		
         if (!questionInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'question.label', default: 'Question'), id])
             redirect(action: "list")

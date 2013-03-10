@@ -6,4 +6,13 @@ class Answer extends InteractionContent{
 	
     static constraints = {
     }
+	
+	public String getResume()
+	{
+		String resume = content;
+		if(resume.size() > 20)
+			resume = content.substring(0, 20);
+			
+		return resume + "...";
+	}
 }

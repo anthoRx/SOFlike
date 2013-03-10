@@ -4,9 +4,10 @@ import java.awt.TextArea;
 import java.util.Date;
 
 
-abstract class InteractionContent {
+abstract class InteractionContent implements Comparable<InteractionContent> {
 	String content;
 	Date creationDate;
+	
 	
 	static hasMany = [votes: Vote, versionings: Versioning, comments: Comment]
 	static belongsTo = [user:User]
@@ -15,6 +16,17 @@ abstract class InteractionContent {
 		content ( blank: false, maxSize: 50000, html: true )
 		versionings: nullable: false 	
     }
+	
+	//For sorting comments by date
+	static mapping = {
+		comments sort:'creationDate'
+	}
+	
+	//CompareTo method to have the more voted answer first
+	int compareTo(InteractionContent other) {
+		return  other.getValeurVotes() <=> getValeurVotes()
+	}
+ 
 	
 	int getValeurVotes()
 	{

@@ -10,4 +10,5 @@ class Comment {
 	
     static constraints = {
     }
+	
 }

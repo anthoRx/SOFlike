@@ -6,6 +6,7 @@
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'user.label', default: 'User')}" />
 		<title><g:message code="default.show.label" args="[entityName]" /></title>
+		<link rel="stylesheet" href="${resource(dir: 'css', file: 'tag.css')}" type="text/css"/>
 		<style type="text/css" media="screen">
 			#Avatar {
 				float: left;
@@ -44,7 +45,7 @@
 			<!--  Avatar -->
 			<div id="Avatar">
 				<g:if test="${userInstance?.avatar}">
-  					<img class="avatar" src="${createLink(controller:'user', action:'avatar_image', id:userInstance.ident())}" />
+  					<img height="42" width="42" class="avatar" src="${createLink(controller:'user', action:'avatar_image', id:userInstance.ident())}" />
 				</g:if>
 			</div>
 			
@@ -130,20 +131,23 @@
 		    
 		  </ul>
 		  <div id="tabs-2">
-		   <g:each var="question" in="${questions}">
-		  		<g:if test="${question.answers?.size() > 0}">
-		  		<g:each var="answer" in="${questions?.answers}">
-					<g:link controller="question" action="show" id="${question.id}"><span>${question.title}</g:link></span>
+		  <g:if test="${answers?.size() > 0}">
+		   <g:each var="answer" in="${answers}">
+		  		
+					<g:link controller="question" action="show" id="${answer.question.id}">${answer?.getResume()}  </g:link><i><g:formatDate format="'the' dd/MM/yyyy 'at' hh:ss" date="${answer.creationDate}"/></i></span>
 					</br>
-				</g:each>
-				</g:if>
+				
 			</g:each>
+		</g:if>
+		<g:else>
+			No answers available
+		</g:else>
 		  </div>
 		  
 		  <div id="tabs-3">
 		  <g:if test="${questions?.size() > 0}">
 		  	<g:each var="question" in="${questions}">
-				<g:link controller="question" action="show" id="${question.id}"><span>${question.title}</g:link> <i><g:formatDate format="'the' MM/dd/yyyy 'at' hh:ss" date="${question.creationDate}"/></i></span>
+				<g:link controller="question" action="show" id="${question.id}"><span>${question.title}</g:link> <i><g:formatDate format="'the' dd/MM/yyyy 'at' hh:ss" date="${question.creationDate}"/></i></span>
 				</br>
 			</g:each>
 		  </g:if>
@@ -152,8 +156,24 @@
 		  </g:else>
 		  </div>
 		  <div id="tabs-4">
-		    <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>
-		    <p>Duis cursus. Maecenas ligula eros, blandit nec, pharetra at, semper at, magna. Nullam ac lacus. Nulla facilisi. Praesent viverra justo vitae neque. Praesent blandit adipiscing velit. Suspendisse potenti. Donec mattis, pede vel pharetra blandit, magna ligula faucibus eros, id euismod lacus dolor eget odio. Nam scelerisque. Donec non libero sed nulla mattis commodo. Ut sagittis. Donec nisi lectus, feugiat porttitor, tempor ac, tempor vitae, pede. Aenean vehicula velit eu tellus interdum rutrum. Maecenas commodo. Pellentesque nec elit. Fusce in lacus. Vivamus a libero vitae lectus hendrerit hendrerit.</p>
+		  <g:if test="${userInstance?.getUserTags().size() > 0}">
+		  <table>
+				<tbody>
+					<tr>
+					    <g:each var="tag" in="${userInstance?.getUserTags()}">
+								<span class="usual_tag">
+									<g:link controller="tag" action="show" id="${tag.key?.id}">${tag.key?.encodeAsHTML()}</g:link>
+								</span>	
+								<span style="font-size: small;color: gray;">&nbsp;x&nbsp;${tag.value}</span>
+								&nbsp;&nbsp;&nbsp;&nbsp;
+						</g:each>	  
+					</tr>
+				</tbody>
+			</table>
+			</g:if>
+			<g:else>
+		  		No tags available
+		  	</g:else>
 		  </div>
 		  
 		  <div id="tabs-5">
@@ -164,7 +184,7 @@
 			</g:each>
 		  </g:if>
 		  <g:else>
-		  	No questions available
+		  	No badges available
 		  </g:else>
 		  </div>
 		</div>

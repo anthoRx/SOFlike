@@ -43,14 +43,9 @@ class UserController {
             return
         }
 		def questions = Question.getAll().findAll { it.user.id == userInstance.id}
-		//def answers = Answer.getAll().findAll { it.question.user.id == userInstance.id}
-		//def tags = Tag.getAll().findAll { it.user.id == userInstance.id}
-		//def badges = Badge.getAll().findAll { it.users.id == id}
-		
-        [userInstance: userInstance, questions: questions ]
-		//[answers: answers]
-		//[tags: tags]
-		//[badges: badges]
+		def answers = Answer.getAll().findAll { it.user.id == userInstance.id}
+	
+        [userInstance: userInstance, questions: questions, answers: answers ]
     }
 
     def edit(Long id) {
@@ -82,7 +77,6 @@ class UserController {
             }
         }
 
-		//params = params.findAll{!StringUtils.isBlank(it)}
         userInstance.properties = params
 
         if (!userInstance.save(flush: true)) {

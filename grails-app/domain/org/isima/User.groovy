@@ -37,6 +37,29 @@ class User {
 	static mapping = {
 		password column: '`password`'
 	}
+	
+	Map<Tag, Integer> getUserTags()
+	{
+		Map<Tag, Integer> mapTags = new HashMap<Tag, Integer>();
+		for(Object item in interactionContents){
+			if(item instanceof Question)
+			{
+				Question quest = (Question) item
+				for(Tag tag in quest?.tags){
+					if(mapTags.containsKey(tag)){
+						int val = mapTags.get(tag).value
+						mapTags.remove(tag)
+						mapTags.put(tag, ++val)
+					}
+					else{
+						mapTags.put(tag, 1)
+					}
+				}
+			}	
+		}
+				
+		return mapTags;
+	}
 
 	Set<Role> getAuthorities() {
 		UserRole.findAllByUser(this).collect { it.role } as Set
@@ -46,7 +69,7 @@ class User {
 		//We set enabled true
 		enabled = true;
 		//We add the avatar				
-		def img = ImageIO.read(new File("C:\\Users\\toony\\Desktop\\client.png"));
+		def img = ImageIO.read(new File("/Users/PFR/Desktop/client.png"));
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ImageIO.write( img, "png", baos );
 		baos.flush();

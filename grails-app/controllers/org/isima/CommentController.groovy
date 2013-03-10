@@ -34,16 +34,16 @@ class CommentController {
 		def commentInstance = new Comment(params)
 		//We set the date
 		commentInstance.creationDate = new Date()
-		//We retrieve the answer
-		def answerInstance = Answer.findById(params.answerInstance);
-		commentInstance.interactionContent = answerInstance
+		//We retrieve the interaction content
+		def ieInstance = InteractionContent.findById(params.ieId);
+		commentInstance.interactionContent = ieInstance
 		if (!commentInstance.save(flush: true)) {
             flash.message ="The comment wasn't be created"
-			render(template: "commentsByIE", model: [ieInstance: answerInstance])
+			render(template: "commentsByIE", model: [ieInstance: ieInstance])
 			return
 		}
 
-		render(template: "commentsByIE", model: [ieInstance: answerInstance])
+		render(template: "commentsByIE", model: [ieInstance: ieInstance])
 	}
 
     def show(Long id) {

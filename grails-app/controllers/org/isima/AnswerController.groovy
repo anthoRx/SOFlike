@@ -1,12 +1,14 @@
 package org.isima
 
 import org.springframework.dao.DataIntegrityViolationException
+import grails.plugins.springsecurity.Secured
 
 class AnswerController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 	def springSecurityService
 	def answerService
+	def userService
 
     def index() {
         redirect(action: "list", params: params)
@@ -16,12 +18,14 @@ class AnswerController {
         params.max = Math.min(max ?: 10, 100)
         [answerInstanceList: Answer.list(params), answerInstanceTotal: Answer.count()]
     }
-
+	
+	@Secured(['ROLE_USER','ROLE_ADMIN'])
     def create() {
         [answerInstance: new Answer(params)]
     }
 	
 	
+	@Secured(['ROLE_USER','ROLE_ADMIN'])
 	def saveInShow() {
 		def answerInstance = new Answer(params)
 		//We retrieve the user
@@ -45,7 +49,8 @@ class AnswerController {
 
 		render(template: "answersByQuestion", model: [questionInstance: questionInstance])
 	}
-
+	
+	@Secured(['ROLE_USER','ROLE_ADMIN'])
     def save() {
         def answerInstance = new Answer(params)
         if (!answerInstance.save(flush: true)) {
@@ -68,8 +73,21 @@ class AnswerController {
         [answerInstance: answerInstance]
     }
 
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
     def edit(Long id) {
         def answerInstance = Answer.get(id)
+		
+		// Check if the user can update the question (only for the owner or an admin)
+		if(!userService.hasPermission(answerInstance)) {
+			flash.message = message(code: 'security.not.authorized')
+			redirect(action: "list")
+			return
+		}
+		
         if (!answerInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'answer.label', default: 'Answer'), id])
             redirect(action: "list")
@@ -79,8 +97,22 @@ class AnswerController {
         [answerInstance: answerInstance]
     }
 
+	/**
+	 * 
+	 * @param id
+	 * @param version
+	 * @return
+	 */
     def update(Long id, Long version) {
         def answerInstance = Answer.get(id)
+		
+		// Check if the user can update the question (only for the owner or an admin)
+		if(!userService.hasPermission(answerInstance)) {
+			flash.message = message(code: 'security.not.authorized')
+			redirect(action: "list")
+			return
+		}
+		
         if (!answerInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'answer.label', default: 'Answer'), id])
             redirect(action: "list")
@@ -111,11 +143,24 @@ class AnswerController {
 		answerService.update(answerInstance,oldContent)
 
         flash.message = message(code: 'default.updated.message', args: [message(code: 'answer.label', default: 'Answer'), answerInstance.id])
-        redirect(action: "show", id: answerInstance.id)
+        redirect(controller: "question", action: "show", id: answerInstance.question.id)
     }
-
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
     def delete(Long id) {
         def answerInstance = Answer.get(id)
+		
+		// Check if the user can update the question (only for the owner or an admin)
+		if(!userService.hasPermission(answerInstance)) {
+			flash.message = message(code: 'security.not.authorized')
+			redirect(action: "list")
+			return
+		}
+		
         if (!answerInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'answer.label', default: 'Answer'), id])
             redirect(action: "list")
@@ -123,9 +168,10 @@ class AnswerController {
         }
 
         try {
+			def qId = answerInstance.question.id
             answerInstance.delete(flush: true)
             flash.message = message(code: 'default.deleted.message', args: [message(code: 'answer.label', default: 'Answer'), id])
-            redirect(action: "list")
+            redirect(controller: "question", action: "show", id: qId)
         }
         catch (DataIntegrityViolationException e) {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'answer.label', default: 'Answer'), id])

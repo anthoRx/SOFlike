@@ -9,31 +9,14 @@
 	</head>
 	<body>
 		<a href="#show-answer" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
-			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
-				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-			</ul>
-		</div>
+	
 		<div id="show-answer" class="content scaffold-show" role="main">
 			<h1><g:message code="default.show.label" args="[entityName]" /></h1>
 			<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
 			<ol class="property-list answer">
-			
-				<g:if test="${answerInstance?.comments}">
-				<li class="fieldcontain">
-					<span id="comments-label" class="property-label"><g:message code="answer.comments.label" default="Comments" /></span>
-					
-						<g:each in="${answerInstance.comments}" var="c">
-						<span class="property-value" aria-labelledby="comments-label"><g:link controller="comment" action="show" id="${c.id}">${c?.encodeAsHTML()}</g:link></span>
-						</g:each>
-					
-				</li>
-				</g:if>
-			
+										
 				<g:if test="${answerInstance?.content}">
 				<li class="fieldcontain">
 					<span id="content-label" class="property-label"><g:message code="answer.content.label" default="Content" /></span>
@@ -47,16 +30,9 @@
 				<li class="fieldcontain">
 					<span id="creationDate-label" class="property-label"><g:message code="answer.creationDate.label" default="Creation Date" /></span>
 					
-						<span class="property-value" aria-labelledby="creationDate-label"><g:fieldValue bean="${answerInstance}" field="creationDate"/></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${answerInstance?.question}">
-				<li class="fieldcontain">
-					<span id="question-label" class="property-label"><g:message code="answer.question.label" default="Question" /></span>
-					
-						<span class="property-value" aria-labelledby="question-label"><g:link controller="question" action="show" id="${answerInstance?.question?.id}">${answerInstance?.question?.encodeAsHTML()}</g:link></span>
+						<span class="property-value" aria-labelledby="creationDate-label">
+							<g:formatDate format="MMM ''yy 'at' k:mm" date="${answerInstance?.creationDate}" locale="EN_en"/>
+						</span>
 					
 				</li>
 				</g:if>
@@ -70,6 +46,28 @@
 				</li>
 				</g:if>
 			
+				<g:if test="${answerInstance?.question}">
+				<li class="fieldcontain">
+					<span id="question-label" class="property-label"><g:message code="answer.question.label" default="Question" /></span>
+					
+						<span class="property-value" aria-labelledby="question-label">
+							<g:link controller="question" action="show" id="${answerInstance?.question?.id}">${answerInstance?.question?.title}</g:link>
+						</span>
+					
+				</li>
+				</g:if>
+				
+				<g:if test="${answerInstance?.comments}">
+				<li class="fieldcontain">
+					<span id="comments-label" class="property-label"><g:message code="answer.comments.label" default="Comments" /></span>
+					
+						<g:each in="${answerInstance.comments}" var="c">
+						<span class="property-value" aria-labelledby="comments-label"><g:link controller="comment" action="show" id="${c.id}">${c?.content.encodeAsHTML()}</g:link></span>
+						</g:each>
+					
+				</li>
+				</g:if>
+				
 				<g:if test="${answerInstance?.versionings}">
 				<li class="fieldcontain">
 					<span id="versionings-label" class="property-label"><g:message code="answer.versionings.label" default="Versionings" /></span>
@@ -85,10 +83,9 @@
 				<li class="fieldcontain">
 					<span id="votes-label" class="property-label"><g:message code="answer.votes.label" default="Votes" /></span>
 					
-						<g:each in="${answerInstance.votes}" var="v">
-						<span class="property-value" aria-labelledby="votes-label"><g:link controller="vote" action="show" id="${v.id}">${v?.encodeAsHTML()}</g:link></span>
-						</g:each>
-					
+					<span class="property-value" aria-labelledby="votes-label">
+						${answerInstance.getValeurVotes()}
+					</span>
 				</li>
 				</g:if>
 			

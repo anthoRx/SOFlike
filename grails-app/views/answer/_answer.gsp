@@ -51,36 +51,36 @@
 	border-radius: 0.6em;
 	margin-left: 20%;">
 	<g:if test="${answerInstance?.content}">
-			<p><g:fieldValue bean="${answerInstance}" field="content"/></p>
+			<p>${answerInstance?.content.decodeHTML()}</p>
 	</g:if>
 	</div>
 		
 	<div id="bottom" align="center" style="margin-left: 20%;">
 		<table>
-			<tr>
-				<td style="width: 33%;">
-					<g:form controller="answer" method="post">
-						<fieldset class="buttons">
-							<g:hiddenField name="id" value="${answerInstance?.id}" />
-							<g:actionSubmit class="edit" action="edit" value="${message(code: 'default.button.edit.label', default: 'Edit')}" />
-							<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-						</fieldset>
-					</g:form>
-					<sec:ifLoggedIn>
-						<button  name="addComment" value="Comment" onclick="showAddComment(${answerInstance?.id})">Comment</button>
-					</sec:ifLoggedIn>
-				</td>
-				<td style="width: 33%;">
-					<g:if test="${answerInstance?.creationDate}">
-						<span>answered <g:formatDate format="MMM	''yy 'at' k:m" date="${answerInstance?.creationDate}" locale="EN_en"/></span>
-					</g:if>
-				</td>
-				<td style="width: 33%;text-align:center;">
-					<g:if test="${answerInstance?.user}">
-						<g:link controller="user" action="show" id="${answerInstance?.user?.id}">${answerInstance?.user?.encodeAsHTML()}</g:link>		
-					</g:if>		
-				</td>
-			</tr>
+		<tr>
+			<td style="width: 33%;">
+				<g:form controller="answer" method="post">
+					<fieldset class="buttons">
+						<g:hiddenField name="id" value="${answerInstance?.id}" />
+						<g:actionSubmit class="edit" action="edit" value="${message(code: 'default.button.edit.label', default: 'Edit')}" />
+						<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+					</fieldset>
+				</g:form>
+				<sec:ifLoggedIn>
+					<button  name="addComment" value="Comment" onclick="showAddComment(${answerInstance?.id})">Comment</button>
+				</sec:ifLoggedIn>
+			</td>
+			<td style="width: 33%;">
+				<g:if test="${answerInstance?.creationDate}">
+					<span>answered <g:formatDate format="MMM ''yy 'at' k:m" date="${answerInstance?.creationDate}" locale="EN_en"/></span>
+				</g:if>
+			</td>
+			<td style="width: 33%;text-align:center;">
+				<g:if test="${answerInstance?.user}">
+					<g:link controller="user" action="show" id="${answerInstance?.user?.id}">${answerInstance?.user?.encodeAsHTML()}</g:link>		
+				</g:if>		
+			</td>
+		</tr>
 		</table>
 	</div>		
 	
@@ -91,7 +91,7 @@
 	
 	<div id="addComment${answerInstance?.id}" style="display: none">
 		<g:formRemote name="myForm" on404="alert('not found!')" update="comments${answerInstance?.id}"
-	            	url="[controller: 'comment', action:'saveInShow', params: [answerInstance: "${answerInstance?.id}"]]">
+	            	url="[controller: 'comment', action:'saveInShow', params: [ieId: "${answerInstance?.id}"]]">
 			<g:render template="/comment/createInShow"  />
 			<fieldset class="buttons">
 				<g:submitButton name="create" class="save" value="Add Comment" />

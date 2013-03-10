@@ -4,6 +4,5 @@
 </head>
 
 <div class="fieldcontain ${hasErrors(bean: answerInstance, field: 'content', 'error')} ">
-		
-		<g:textField name="contentAnswer"/>
+	<richui:richTextEditor name="content" value="${answerInstance?.content}"/>
 </div>

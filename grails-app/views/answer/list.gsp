@@ -9,12 +9,7 @@
 	</head>
 	<body>
 		<a href="#list-answer" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
-			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-			</ul>
-		</div>
+		
 		<div id="list-answer" class="content scaffold-list" role="main">
 			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
 			<g:if test="${flash.message}">
@@ -24,7 +19,7 @@
 				<thead>
 					<tr>
 					
-						<g:sortableColumn property="content" title="${message(code: 'answer.content.label', default: 'Content')}" />
+						<th><g:message code="answer.content.label" default="Content" /></th>
 					
 						<g:sortableColumn property="creationDate" title="${message(code: 'answer.creationDate.label', default: 'Creation Date')}" />
 					
@@ -38,11 +33,11 @@
 				<g:each in="${answerInstanceList}" status="i" var="answerInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
-						<td><g:link action="show" id="${answerInstance.id}">${fieldValue(bean: answerInstance, field: "content")}</g:link></td>
+						<td><g:link action="show" id="${answerInstance.id}">${answerInstance?.content.decodeHTML()}</g:link></td>
 					
 						<td>${fieldValue(bean: answerInstance, field: "creationDate")}</td>
 					
-						<td>${fieldValue(bean: answerInstance, field: "question")}</td>
+						<td>${fieldValue(bean: answerInstance, field: "question.title")}</td>
 					
 						<td>${fieldValue(bean: answerInstance, field: "user")}</td>
 					

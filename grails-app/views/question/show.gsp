@@ -30,15 +30,15 @@
 					<table>
 					<tr><td>
 						<sec:ifLoggedIn>
-		              	<g:formRemote name="myForm" on404="alert('not found!')" update="noteValue"
-		              	url="[controller: 'vote', action:'saveInShow']">
-                    	<g:hiddenField name="user.id" value="" />
-                    	<g:hiddenField name="value" value="1" />
-                    	<g:hiddenField name="interactionContent.id" value="${questionInstance?.id}" />
-		              	<button style="border:none; background-color:transparent;" type="submit" name="method_premium" value="">
-  							<img src="${resource(dir: 'images', file: 'Up.png')}" alt="Home"/>
-						</button>
-						</g:formRemote>
+			              	<g:formRemote name="myForm" on404="alert('not found!')" update="noteValue"
+			              	url="[controller: 'vote', action:'saveInShow']">
+		                    	<g:hiddenField name="user.id" value="" />
+		                    	<g:hiddenField name="value" value="1" />
+		                    	<g:hiddenField name="interactionContent.id" value="${questionInstance?.id}" />
+				              	<button style="border:none; background-color:transparent;" type="submit" name="method_premium" value="">
+		  							<img src="${resource(dir: 'images', file: 'Up.png')}" alt="Home"/>
+								</button>
+							</g:formRemote>
 						</sec:ifLoggedIn>
 						</td></tr>
 					<tr><td id="noteValue" style="font-size: 26px;text-align: center;">${questionInstance?.getValeurVotes()}</td></tr>

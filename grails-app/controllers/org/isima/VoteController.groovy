@@ -1,6 +1,7 @@
 package org.isima
 
 import org.springframework.dao.DataIntegrityViolationException
+import grails.plugins.springsecurity.Secured
 
 class VoteController {
 
@@ -10,27 +11,15 @@ class VoteController {
     def index() {
         redirect(action: "list", params: params)
     }
-
+	
+	@Secured('ROLE_ADMIN')
     def list(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         [voteInstanceList: Vote.list(params), voteInstanceTotal: Vote.count()]
     }
 
-    def create() {
-        [voteInstance: new Vote(params)]
-    }
-
-    def save() {
-        def voteInstance = new Vote(params)
-        if (!voteInstance.save(flush: true)) {
-            render(view: "create", model: [voteInstance: voteInstance])
-            return
-        }
-
-        flash.message = message(code: 'default.created.message', args: [message(code: 'vote.label', default: 'Vote'), voteInstance.id])
-        redirect(action: "show", id: voteInstance.id)
-    }
 	
+	@Secured(['ROLE_USER','ROLE_ADMIN'])
 	def saveInShow() {
 		def voteInstance = new Vote(params)
 		//We retrieve the user
@@ -45,58 +34,9 @@ class VoteController {
 		flash.message = message(code: 'default.created.message', args: [message(code: 'vote.label', default: 'Vote'), voteInstance.id])
 		redirect(action: "show", id: voteInstance.id)
 	}
-
-    def show(Long id) {
-        def voteInstance = Vote.get(id)
-        if (!voteInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'vote.label', default: 'Vote'), id])
-            redirect(action: "list")
-            return
-        }
-
-        [voteInstance: voteInstance]
-    }
-
-    def edit(Long id) {
-        def voteInstance = Vote.get(id)
-        if (!voteInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'vote.label', default: 'Vote'), id])
-            redirect(action: "list")
-            return
-        }
-
-        [voteInstance: voteInstance]
-    }
-
-    def update(Long id, Long version) {
-        def voteInstance = Vote.get(id)
-        if (!voteInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'vote.label', default: 'Vote'), id])
-            redirect(action: "list")
-            return
-        }
-
-        if (version != null) {
-            if (voteInstance.version > version) {
-                voteInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-                          [message(code: 'vote.label', default: 'Vote')] as Object[],
-                          "Another user has updated this Vote while you were editing")
-                render(view: "edit", model: [voteInstance: voteInstance])
-                return
-            }
-        }
-
-        voteInstance.properties = params
-
-        if (!voteInstance.save(flush: true)) {
-            render(view: "edit", model: [voteInstance: voteInstance])
-            return
-        }
-
-        flash.message = message(code: 'default.updated.message', args: [message(code: 'vote.label', default: 'Vote'), voteInstance.id])
-        redirect(action: "show", id: voteInstance.id)
-    }
-
+	
+	
+	@Secured('ROLE_ADMIN')
     def delete(Long id) {
         def voteInstance = Vote.get(id)
         if (!voteInstance) {

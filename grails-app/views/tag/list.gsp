@@ -12,7 +12,10 @@
 	<body>
 		
 		<h1><g:message code="default.list.label" args="[entityName]" /></h1>
-		<g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link>
+		
+		<sec:ifAnyGranted  roles="ROLE_USER,ROLE_ADMIN">
+			<g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link>
+		</sec:ifAnyGranted>
 		<div id="list-tag" style="width:100%; text-align:center;">
 			<br/>
 			<g:if test="${flash.message}">

@@ -1,6 +1,7 @@
 package org.isima
 
 import org.springframework.dao.DataIntegrityViolationException
+import grails.plugins.springsecurity.Secured
 
 class CommentController {
 
@@ -14,22 +15,9 @@ class CommentController {
         params.max = Math.min(max ?: 10, 100)
         [commentInstanceList: Comment.list(params), commentInstanceTotal: Comment.count()]
     }
-
-    def create() {
-        [commentInstance: new Comment(params)]
-    }
-
-    def save() {
-        def commentInstance = new Comment(params)
-        if (!commentInstance.save(flush: true)) {
-            render(view: "create", model: [commentInstance: commentInstance])
-            return
-        }
-
-        flash.message = message(code: 'default.created.message', args: [message(code: 'comment.label', default: 'Comment'), commentInstance.id])
-        redirect(action: "show", id: commentInstance.id)
-    }
 	
+	
+	@Secured(['ROLE_USER','ROLE_ADMIN'])
 	def saveInShow() {
 		def commentInstance = new Comment(params)
 		//We set the date
@@ -56,7 +44,8 @@ class CommentController {
 
         [commentInstance: commentInstance]
     }
-
+	
+	@Secured(['ROLE_ADMIN'])
     def edit(Long id) {
         def commentInstance = Comment.get(id)
         if (!commentInstance) {
@@ -67,7 +56,8 @@ class CommentController {
 
         [commentInstance: commentInstance]
     }
-
+	
+	@Secured(['ROLE_ADMIN'])
     def update(Long id, Long version) {
         def commentInstance = Comment.get(id)
         if (!commentInstance) {
@@ -96,7 +86,8 @@ class CommentController {
         flash.message = message(code: 'default.updated.message', args: [message(code: 'comment.label', default: 'Comment'), commentInstance.id])
         redirect(action: "show", id: commentInstance.id)
     }
-
+	
+	@Secured(['ROLE_ADMIN'])
     def delete(Long id) {
         def commentInstance = Comment.get(id)
         if (!commentInstance) {

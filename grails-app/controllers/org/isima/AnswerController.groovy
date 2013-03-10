@@ -18,12 +18,7 @@ class AnswerController {
         params.max = Math.min(max ?: 10, 100)
         [answerInstanceList: Answer.list(params), answerInstanceTotal: Answer.count()]
     }
-	
-	@Secured(['ROLE_USER','ROLE_ADMIN'])
-    def create() {
-        [answerInstance: new Answer(params)]
-    }
-	
+		
 	
 	@Secured(['ROLE_USER','ROLE_ADMIN'])
 	def saveInShow() {
@@ -50,17 +45,7 @@ class AnswerController {
 		render(template: "answersByQuestion", model: [questionInstance: questionInstance])
 	}
 	
-	@Secured(['ROLE_USER','ROLE_ADMIN'])
-    def save() {
-        def answerInstance = new Answer(params)
-        if (!answerInstance.save(flush: true)) {
-            render(view: "create", model: [answerInstance: answerInstance])
-            return
-        }
 
-        flash.message = message(code: 'default.created.message', args: [message(code: 'answer.label', default: 'Answer'), answerInstance.id])
-        redirect(action: "show", id: answerInstance.id)
-    }
 
     def show(Long id) {
         def answerInstance = Answer.get(id)

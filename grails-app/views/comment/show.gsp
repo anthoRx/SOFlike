@@ -32,7 +32,7 @@
 					<span id="creationDate-label" class="property-label"><g:message code="comment.creationDate.label" default="Creation Date" /></span>
 					
 						<span class="property-value" aria-labelledby="creationDate-label">						
-							<g:formatDate format="MMM ''yy 'at' k:mm" date="${commentInstance?.creationDate}" locale="EN_en"/>
+							<g:formatDate format="MMM ''dd 'at' k:mm" date="${commentInstance?.creationDate}" locale="EN_en"/>
 						</span>
 					
 				</li>

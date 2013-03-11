@@ -27,7 +27,7 @@
 				<tbody>
 				<g:each in="${versioningInstanceList}" status="i" var="versioningInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">						
-						<td><g:formatDate format="MMM	''yy 'at' k:mm" date="${versioningInstance?.modificationDate}" locale="EN_en"/></td>	
+						<td><g:formatDate format="MMM	''dd 'at' k:mm" date="${versioningInstance?.modificationDate}" locale="EN_en"/></td>	
 						<td><g:link action="show" id="${versioningInstance.id}">${versioningInstance.content.substring(0, 40).decodeHTML()}...</g:link></td>				
 					</tr>
 				</g:each>

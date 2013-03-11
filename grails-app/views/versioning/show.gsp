@@ -31,7 +31,7 @@
 					<span id="modificationDate-label" class="property-label"><g:message code="versioning.modificationDate.label" default="Modification Date" /></span>
 					
 						<span class="property-value" aria-labelledby="modificationDate-label">
-							<g:formatDate format="MMM ''yy 'at' k:mm" date="${versioningInstance?.modificationDate}" locale="EN_en"/>
+							<g:formatDate format="MMM ''dd 'at' k:mm" date="${versioningInstance?.modificationDate}" locale="EN_en"/>
 						</span>
 					
 				</li>

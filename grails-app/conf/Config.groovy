@@ -15,6 +15,7 @@ grails.project.groupId = appName // change this to alter the default package nam
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
 grails.mime.use.accept.header = false
 grails.plugin.databasesession.enabled = false
+richui.serve.resource.files.remote=true
 grails.mime.types = [
     all:           '*/*',
     atom:          'application/atom+xml',

@@ -90,7 +90,7 @@
 					</td>
 					<td style="width: 33%;">
 						<g:if test="${questionInstance?.creationDate}">
-							<span>asked <g:formatDate format="MMM	''yy 'at' k:m" date="${questionInstance?.creationDate}" locale="EN_en"/></span>
+							<span>asked <g:formatDate format="MMM	''dd 'at' k:m" date="${questionInstance?.creationDate}" locale="EN_en"/></span>
 						</g:if>
 					</td>
 					<td style="width: 33%;text-align:center;">

@@ -69,7 +69,7 @@
 			</td>
 			<td style="width: 33%;">
 				<g:if test="${answerInstance?.creationDate}">
-					<span>answered <g:formatDate format="MMM ''yy 'at' k:m" date="${answerInstance?.creationDate}" locale="EN_en"/></span>
+					<span>answered <g:formatDate format="MMM ''dd 'at' k:m" date="${answerInstance?.creationDate}" locale="EN_en"/></span>
 				</g:if>
 			</td>
 			<td style="width: 33%;text-align:center;">

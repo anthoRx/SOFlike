@@ -87,7 +87,7 @@ class UserController {
 		//Handle the avatar
 		
 		// Get the avatar file from the multi-part request
-		MultipartFile f = request.getFile('avatar')
+		MultipartFile f = request.getFile('avatarFile')
 	  
 		// List of OK mime-types
 		def okcontents = ['image/png', 'image/jpeg', 'image/gif']
@@ -110,6 +110,7 @@ class UserController {
 				render(view:'edit', model:[userInstance: userInstance])
 			  return;
 			}
+			
 		}
 	  
         flash.message = message(code: 'default.updated.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])

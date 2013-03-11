@@ -37,8 +37,8 @@
 	<fieldset>
   <legend>Avatar Upload</legend>
   
-    <label for="avatar">Avatar (16K)</label>
-    <input type="file" name="avatar" id="avatar" value="${userInstance?.avatar}" />
+    <label for="avatar">Avatar (3Mo)</label>
+    <input type="file" name="avatarFile" id="avatarFile" />
     <div style="font-size:0.8em; margin: 1.0em;">
       For best results, your avatar should have a width-to-height ratio of 4:5.
       For example, if your image is 80 pixels wide, it should be 100 pixels high.
@@ -87,24 +87,7 @@
 		</label>
 		<g:checkBox name="enabled" value="${userInstance?.enabled}" />
 	</div>
-	
-	<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'interactionContents', 'error')} ">
-		<label for="interactionContents">
-			<g:message code="user.interactionContents.label" default="Interaction Contents" />
-			
-		</label>
 		
-	<ul class="one-to-many">
-	<g:each in="${userInstance?.interactionContents?}" var="i">
-	    <li><g:link controller="interactionContent" action="show" id="${i.id}">${i?.encodeAsHTML()}</g:link></li>
-	</g:each>
-	<li class="add">
-	<g:link controller="interactionContent" action="create" params="['user.id': userInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'interactionContent.label', default: 'InteractionContent')])}</g:link>
-	</li>
-	</ul>
-	
-	</div>
-	
 	<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'passwordExpired', 'error')} ">
 		<label for="passwordExpired">
 			<g:message code="user.passwordExpired.label" default="Password Expired" />
@@ -113,20 +96,6 @@
 		<g:checkBox name="passwordExpired" value="${userInstance?.passwordExpired}" />
 	</div>
 	
-	<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'votes', 'error')} ">
-		<label for="votes">
-			<g:message code="user.votes.label" default="Votes" />
-			
-		</label>
-		
-	<ul class="one-to-many">
-	<g:each in="${userInstance?.votes?}" var="v">
-	    <li><g:link controller="vote" action="show" id="${v.id}">${v?.encodeAsHTML()}</g:link></li>
-	</g:each>
-	<li class="add">
-	<g:link controller="vote" action="create" params="['user.id': userInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'vote.label', default: 'Vote')])}</g:link>
-	</li>
-	</ul>
-	</div>
+	
 </sec:ifAllGranted>
 

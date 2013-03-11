@@ -138,7 +138,7 @@
 				<br/>
 				
 				<sec:ifLoggedIn>
-					<g:formRemote name="myForm" on404="alert('not found!')" update="answers" url="[controller: 'answer', action:'save']">
+					<g:formRemote name="myForm" on404="alert('not found!')" update="answers" url="[controller: 'answer', action:'saveInShow']">
 						<div>						
 							<h1>Rapid Answer</h1>
 							<span style="float:right">

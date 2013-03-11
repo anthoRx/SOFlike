@@ -6,9 +6,6 @@ class UserService {
 	
 	def springSecurityService
 	
-    def serviceMethod() {
-
-    }
 	
 	/**
 	 * Determines whether the current user

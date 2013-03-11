@@ -1,14 +1,21 @@
 package org.isima
 
 
-
+import org.junit.Before;
 import org.junit.*
 import grails.test.mixin.*
 
 @TestFor(BadgeController)
 @Mock(Badge)
 class BadgeControllerTests {
-
+	
+	@Before
+	void setUp() {		
+		def mockGameService = mockFor(GameService)
+		mockGameService.demand.updateBadgeAttribution(0..1) {Badge object -> return true}
+		controller.gameService = mockGameService.createMock()
+	}
+	
     def populateValidParams(params) {
         assert params != null
         params["name"] = 'someValidName'

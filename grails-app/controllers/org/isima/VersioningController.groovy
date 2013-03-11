@@ -31,18 +31,6 @@ class VersioningController {
 	}
 	
 	@Secured(['ROLE_USER','ROLE_ADMIN'])
-    def save() {
-        def versioningInstance = new Versioning(params)
-        if (!versioningInstance.save(flush: true)) {
-            render(view: "create", model: [versioningInstance: versioningInstance])
-            return
-        }
-
-        flash.message = message(code: 'default.created.message', args: [message(code: 'versioning.label', default: 'Versioning'), versioningInstance.id])
-        redirect(action: "show", id: versioningInstance.id)
-    }
-	
-	@Secured(['ROLE_USER','ROLE_ADMIN'])
     def show(Long id) {
         def versioningInstance = Versioning.get(id)
         if (!versioningInstance) {

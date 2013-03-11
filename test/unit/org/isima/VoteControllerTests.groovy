@@ -3,18 +3,38 @@ package org.isima
 
 
 import org.junit.*
+
 import grails.test.mixin.*
 import java.sql.Timestamp
 
 @TestFor(VoteController)
 @Mock([Vote,Question,User])
 class VoteControllerTests {
-
+	
+	def loggedInUser
+	
+	@Before
+	void setUp() {
+		// We save the user in order to have an id
+		loggedInUser = new User(username: 'bobby', enabled: false, password: 'password', name: 'Bob', lastName: 'Bobby', points: 0);
+		loggedInUser.save(flush: true)
+		
+		// We mock the springSecurityService
+		controller.springSecurityService = [
+			encodePassword: 'password',
+			reauthenticate: { String u -> true},
+			loggedIn: true,
+			currentUser: loggedInUser]
+		
+		def mockVoteService = mockFor(VoteService)
+		mockVoteService.demand.upVote(0..1) {Vote object -> return true}
+		mockVoteService.demand.downVote(0..1) {Vote object -> return true}
+		controller.voteService = mockVoteService.createMock()
+	}
+	
     def populateValidParams(params) {
         assert params != null
 		def date = new Timestamp(new Date().getTime())
-		def loggedInUser = new User(username: 'bobby', enabled: false, password: 'password', name: 'Bob', lastName: 'Bobby', points: 0);
-		loggedInUser.save(flush: true)
 		def question = new Question(title: 'Should I buy a boat ??', nbView: 10, content: 'That is the question', creationDate: date)
 		question.save(flush: true)
 		
@@ -36,14 +56,8 @@ class VoteControllerTests {
         assert model.voteInstanceTotal == 0
     }
 
-    void testCreate() {
-        def model = controller.create()
-
-        assert model.voteInstance != null
-    }
-
-    void testSave() {
-        controller.save()
+    void testSaveInShow() {
+        controller.saveInShow()
 
         assert model.voteInstance != null
         assert view == '/vote/create'
@@ -51,10 +65,13 @@ class VoteControllerTests {
         response.reset()
 
         populateValidParams(params)
-        controller.save()
+        controller.saveInShow()
 
-        assert response.redirectedUrl == '/vote/show/1'
         assert controller.flash.message != null
+        assert Vote.count() == 1
+		
+        controller.saveInShow()
+
         assert Vote.count() == 1
     }
 
@@ -76,68 +93,6 @@ class VoteControllerTests {
         assert model.voteInstance == vote
     }
 
-    void testEdit() {
-        controller.edit()
-
-        assert flash.message != null
-        assert response.redirectedUrl == '/vote/list'
-
-        populateValidParams(params)
-        def vote = new Vote(params)
-
-        assert vote.save() != null
-
-        params.id = vote.id
-
-        def model = controller.edit()
-
-        assert model.voteInstance == vote
-    }
-
-    void testUpdate() {
-        controller.update()
-
-        assert flash.message != null
-        assert response.redirectedUrl == '/vote/list'
-
-        response.reset()
-
-        populateValidParams(params)
-        def vote = new Vote(params)
-
-        assert vote.save() != null
-
-        // test invalid parameters in update
-        params.id = vote.id
-        params.value = "Bad value"
-
-        controller.update()
-
-        assert view == "/vote/edit"
-        assert model.voteInstance != null
-
-        vote.clearErrors()
-
-        populateValidParams(params)
-        controller.update()
-
-        assert response.redirectedUrl == "/vote/show/$vote.id"
-        assert flash.message != null
-
-        //test outdated version number
-        response.reset()
-        vote.clearErrors()
-
-        populateValidParams(params)
-        params.id = vote.id
-        params.version = -1
-        controller.update()
-
-        assert view == "/vote/edit"
-        assert model.voteInstance != null
-        assert model.voteInstance.errors.getFieldError('version')
-        assert flash.message != null
-    }
 
     void testDelete() {
         controller.delete()

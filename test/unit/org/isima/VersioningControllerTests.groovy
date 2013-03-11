@@ -3,16 +3,31 @@ package org.isima
 
 
 import org.junit.*
+
 import grails.test.mixin.*
+import java.sql.Timestamp
+
 
 @TestFor(VersioningController)
-@Mock(Versioning)
+@Mock([Versioning,User,Question])
 class VersioningControllerTests {
-
+	
+	def testUser
+	def testQ
+	def testV
+	
+	@Before
+	void setUp() {
+		def date = new Timestamp(new Date().getTime())
+		testUser = new User(username: 'bobby', enabled: false, password: 'password', name: 'Bobby', lastName: 'Bobby', points: 0).save(flush: true)
+		testQ = new Question(title: 'Why 2 ?', nbView: 10, content: 'Why not too ?', creationDate: date, user: testUser).save(flush: true)
+		testV = new Versioning(content: "old_content", modificationDate: date, interactionContent: testQ).save()
+	}
+	
     def populateValidParams(params) {
         assert params != null
-        // TODO: Populate valid properties like...
-        //params["name"] = 'someValidName'
+		params["content"] = "content_test"
+		params["modificationDate"] = new Timestamp(new Date().getTime())
     }
 
     void testIndex() {
@@ -24,31 +39,10 @@ class VersioningControllerTests {
 
         def model = controller.list()
 
-        assert model.versioningInstanceList.size() == 0
-        assert model.versioningInstanceTotal == 0
+        assert model.versioningInstanceList.size() == 1
+        assert model.versioningInstanceTotal == 1
     }
 
-    void testCreate() {
-        def model = controller.create()
-
-        assert model.versioningInstance != null
-    }
-
-    void testSave() {
-        controller.save()
-
-        assert model.versioningInstance != null
-        assert view == '/versioning/create'
-
-        response.reset()
-
-        populateValidParams(params)
-        controller.save()
-
-        assert response.redirectedUrl == '/versioning/show/1'
-        assert controller.flash.message != null
-        assert Versioning.count() == 1
-    }
 
     void testShow() {
         controller.show()
@@ -56,79 +50,13 @@ class VersioningControllerTests {
         assert flash.message != null
         assert response.redirectedUrl == '/versioning/list'
 
-        populateValidParams(params)
-        def versioning = new Versioning(params)
+		assert Versioning.count() > 0
 
-        assert versioning.save() != null
-
-        params.id = versioning.id
+        params.id = testV.id
 
         def model = controller.show()
 
-        assert model.versioningInstance == versioning
-    }
-
-    void testEdit() {
-        controller.edit()
-
-        assert flash.message != null
-        assert response.redirectedUrl == '/versioning/list'
-
-        populateValidParams(params)
-        def versioning = new Versioning(params)
-
-        assert versioning.save() != null
-
-        params.id = versioning.id
-
-        def model = controller.edit()
-
-        assert model.versioningInstance == versioning
-    }
-
-    void testUpdate() {
-        controller.update()
-
-        assert flash.message != null
-        assert response.redirectedUrl == '/versioning/list'
-
-        response.reset()
-
-        populateValidParams(params)
-        def versioning = new Versioning(params)
-
-        assert versioning.save() != null
-
-        // test invalid parameters in update
-        params.id = versioning.id
-        //TODO: add invalid values to params object
-
-        controller.update()
-
-        assert view == "/versioning/edit"
-        assert model.versioningInstance != null
-
-        versioning.clearErrors()
-
-        populateValidParams(params)
-        controller.update()
-
-        assert response.redirectedUrl == "/versioning/show/$versioning.id"
-        assert flash.message != null
-
-        //test outdated version number
-        response.reset()
-        versioning.clearErrors()
-
-        populateValidParams(params)
-        params.id = versioning.id
-        params.version = -1
-        controller.update()
-
-        assert view == "/versioning/edit"
-        assert model.versioningInstance != null
-        assert model.versioningInstance.errors.getFieldError('version')
-        assert flash.message != null
+        assert model.versioningInstance == testV
     }
 
     void testDelete() {
@@ -138,18 +66,14 @@ class VersioningControllerTests {
 
         response.reset()
 
-        populateValidParams(params)
-        def versioning = new Versioning(params)
-
-        assert versioning.save() != null
         assert Versioning.count() == 1
 
-        params.id = versioning.id
+        params.id = testV.id
 
         controller.delete()
 
         assert Versioning.count() == 0
-        assert Versioning.get(versioning.id) == null
+        assert Versioning.get(testV.id) == null
         assert response.redirectedUrl == '/versioning/list'
     }
 }

@@ -135,7 +135,7 @@ class UserController {
         }
     }
 	
-	def avatar_image() {
+	def avatar_image = {
 		def avatarUser = User.get(params.id)
 		if (!avatarUser || !avatarUser.avatar || !avatarUser.avatarType) {
 		  response.sendError(404)
@@ -146,5 +146,5 @@ class UserController {
 		OutputStream out = response.getOutputStream();
 		out.write(avatarUser.avatar);
 		out.close();
-	}
+	  }
 }

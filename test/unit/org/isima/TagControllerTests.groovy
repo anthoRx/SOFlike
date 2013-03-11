@@ -11,7 +11,8 @@ class TagControllerTests {
 
     def populateValidParams(params) {
         assert params != null
-		params["name"] = "MyTag"
+        // TODO: Populate valid properties like...
+        //params["name"] = 'someValidName'
     }
 
     void testIndex() {

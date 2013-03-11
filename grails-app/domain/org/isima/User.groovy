@@ -70,7 +70,7 @@ class User {
 		enabled = true;
 		//We add the avatar		
 		
-		def img = ImageIO.read(new File(this.getClass().getResource("/resource/User.png").getPath()))
+		/**def img = ImageIO.read(new File(this.getClass().getResource("/resource/User.png").getPath()))
 		
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ImageIO.write( img, "png", baos );
@@ -80,7 +80,7 @@ class User {
 		baos.close();
 		
 		avatar = imageInByte
-		avatarType = "png"
+		avatarType = "png"*/
 		
 		encodePassword()
 	}

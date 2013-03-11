@@ -14,17 +14,21 @@
 		<a href="#show-question" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 
 		<div id="show-question" class="content scaffold-show" role="main">
-			<h1>${questionInstance?.title}</h1>
-			<sec:ifAuthorized value="${questionInstance}">
-				<g:form>
-					<g:hiddenField name="id" value="${questionInstance?.id}" />
-					<g:link class="edit" action="edit" id="${questionInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
-					<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />								
-				</g:form>				
-			</sec:ifAuthorized>			
-			<sec:ifLoggedIn>
-				<g:link controller="versioning" action="listByQuestion" id="${questionInstance?.id}"><g:message code="default.button.versioning.label" default="History" /></g:link>
-			</sec:ifLoggedIn>
+			<div >
+				<h1>${questionInstance?.title}</h1>
+				
+				<span style="float: right;)">
+					<sec:ifAuthorized value="${questionInstance}">
+						<g:link class="edit" action="edit" id="${questionInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
+						<g:remoteLink action="delete" id="${questionInstance?.id}" before="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');">${message(code: 'default.button.delete.label', default: 'Delete')}</g:remoteLink>
+					</sec:ifAuthorized>			
+					<sec:ifLoggedIn>
+						<g:link controller="versioning" action="listByQuestion" id="${questionInstance?.id}"><g:message code="default.button.versioning.label" default="History" /></g:link>
+					</sec:ifLoggedIn>
+				</span>
+				
+			</div>
+			<br/>
 			<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>

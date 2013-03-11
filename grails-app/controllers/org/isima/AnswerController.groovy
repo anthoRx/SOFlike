@@ -5,7 +5,7 @@ import grails.plugins.springsecurity.Secured
 
 class AnswerController {
 
-    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+    static allowedMethods = [save: "POST", update: "POST", delete: ["POST","GET"]]
 	def springSecurityService
 	def answerService
 	def userService
@@ -67,7 +67,7 @@ class AnswerController {
 	 */
     def edit(Long id) {
         def answerInstance = Answer.get(id)
-		
+		print answerInstance
 		// Check if the user can update the question (only for the owner or an admin)
 		if(!userService.hasPermission(answerInstance)) {
 			flash.message = message(code: 'security.not.authorized')

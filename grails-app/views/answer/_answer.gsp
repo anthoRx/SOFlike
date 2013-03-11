@@ -60,16 +60,11 @@
 		<tr>
 			<td style="width: 33%;">
 				<sec:ifAuthorized value="${answerInstance}">			
-					<g:form controller="answer" method="post">
-						<fieldset class="buttons">
-							<g:hiddenField name="id" value="${answerInstance?.id}" />
-							<g:actionSubmit class="edit" action="edit" value="${message(code: 'default.button.edit.label', default: 'Edit')}" />
-							<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-						</fieldset>
-					</g:form>
+					<g:link controller="answer" class="edit" action="edit" id="${answerInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link>						
+					<g:remoteLink controller="answer" action="delete" id="${answerInstance?.id}" before="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');">${message(code: 'default.button.delete.label', default: 'Delete')}</g:remoteLink>
 				</sec:ifAuthorized>
 				<sec:ifLoggedIn>
-					<button  name="addComment" value="Comment" onclick="showAddComment(${answerInstance?.id})">Comment</button>
+					<a href="#comments${answerInstance?.id}" onclick="showAddComment(${answerInstance?.id})">Comment</a>
 				</sec:ifLoggedIn>
 			</td>
 			<td style="width: 33%;">

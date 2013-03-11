@@ -9,7 +9,7 @@ import grails.plugins.springsecurity.Secured
 
 class QuestionController {
 
-    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+    static allowedMethods = [save: "POST", update: "POST", delete: ["POST","GET"]]
 	
 	def springSecurityService
 	def userService
@@ -167,11 +167,11 @@ class QuestionController {
             redirect(action: "list")
             return
         }
-
+		
         try {
             questionInstance.delete(flush: true)
             flash.message = message(code: 'default.deleted.message', args: [message(code: 'question.label', default: 'Question'), id])
-            redirect(action: "list")
+            forward action: "list"
         }
         catch (DataIntegrityViolationException e) {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'question.label', default: 'Question'), id])

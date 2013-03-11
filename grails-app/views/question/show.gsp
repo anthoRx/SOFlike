@@ -138,7 +138,7 @@
 				<br/>
 				
 				<sec:ifLoggedIn>
-					<g:formRemote name="myForm" on404="alert('not found!')" update="answers" url="[controller: 'answer', action:'saveInShow']">
+					<g:formRemote name="myForm" on404="alert('not found!')" update="answers" url="[controller: 'answer', action:'save']">
 						<div>						
 							<h1>Rapid Answer</h1>
 							<span style="float:right">
@@ -146,7 +146,9 @@
 							</span>
 							<g:textArea name="contentAnswer" value="" style="width: 95%;margin-left:20px"/>
 						</div>
-						<g:hiddenField name="questionInstance" value="${questionInstance?.id}" />
+					
+						<g:hiddenField name="questionId" value="${questionInstance?.id}" />
+						<g:hiddenField name="type" value="rapid" />
 						<br/>
 						<fieldset class="buttons">
 							<g:submitButton name="create" class="save" value="Add Answer" />

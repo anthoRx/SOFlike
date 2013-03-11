@@ -29,34 +29,28 @@ class AnswerController {
 		[questionInstance: questionInstance]
 	}
 	
+	
 	@Secured(['ROLE_USER','ROLE_ADMIN'])
 	def save() {
-		print params
-		def answerInstance = new Answer(params)
-		//We retrieve the user
 		def user = springSecurityService.currentUser
-		answerInstance.user = user
-		//We set the content. Error with richui if samename for field (question, answer)
-		answerInstance.content = params.contentAnswer
-		//We retrieve the question
-		def questionInstance = Question.get(params.questionId);
-		//We inform the question
-		answerInstance.question = questionInstance
-		//We set the date
-		answerInstance.creationDate = new Date()
 		
+		def answerInstance = new Answer(content: params.contentAnswer, user: user, creationDate: new Date())		
+		
+		def questionInstance = Question.findById(params.questionId);		
+		answerInstance.question = questionInstance
+	
 		if (!answerInstance.save(flush: true)) {
-            flash.message ="The answer wasn't be created"
+			flash.message ="The answer wasn't be created"
 			render(template: "answersByQuestion", model: [questionInstance: questionInstance])
 			return
 		}
 		
 		answerService.create(answerInstance)
-		
-		redirect(controller: "question", action: "show", id: questionInstance.id)
+		if(params.type == "rapid")			
+			render(template: "answersByQuestion", model: [questionInstance: questionInstance])
+		else
+			redirect(controller: "question", action: "show", id: questionInstance.id)			
 	}
-	
-
 
     def show(Long id) {
         def answerInstance = Answer.get(id)

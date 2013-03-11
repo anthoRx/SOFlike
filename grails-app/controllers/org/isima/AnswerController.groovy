@@ -18,10 +18,20 @@ class AnswerController {
         params.max = Math.min(max ?: 10, 100)
         [answerInstanceList: Answer.list(params), answerInstanceTotal: Answer.count()]
     }
-		
+	
+	/**
+	 *
+	 * @return
+	 */
+	@Secured(['ROLE_USER','ROLE_ADMIN'])
+	def create() {
+        def questionInstance = Question.get(params.id)
+		[questionInstance: questionInstance]
+	}
 	
 	@Secured(['ROLE_USER','ROLE_ADMIN'])
-	def saveInShow() {
+	def save() {
+		print params
 		def answerInstance = new Answer(params)
 		//We retrieve the user
 		def user = springSecurityService.currentUser
@@ -29,8 +39,7 @@ class AnswerController {
 		//We set the content. Error with richui if samename for field (question, answer)
 		answerInstance.content = params.contentAnswer
 		//We retrieve the question
-		def questionInstance = params.questionInstance
-		questionInstance = Question.get(questionInstance);
+		def questionInstance = Question.get(params.questionId);
 		//We inform the question
 		answerInstance.question = questionInstance
 		//We set the date
@@ -44,7 +53,7 @@ class AnswerController {
 		
 		answerService.create(answerInstance)
 		
-		render(template: "answersByQuestion", model: [questionInstance: questionInstance])
+		redirect(controller: "question", action: "show", id: questionInstance.id)
 	}
 	
 

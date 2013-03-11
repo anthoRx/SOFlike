@@ -21,6 +21,7 @@
 				</g:eachError>
 			</ul>
 			</g:hasErrors>
+			
 			<sec:ifAuthorized value="${answerInstance}">
 				<g:form method="post" >
 					<g:hiddenField name="id" value="${answerInstance?.id}" />

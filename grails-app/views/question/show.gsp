@@ -6,6 +6,7 @@
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'question.label', default: 'Question')}" />
 		<link rel="stylesheet" href="${resource(dir: 'css', file: 'tag.css')}" type="text/css" />
+		<link rel="stylesheet" href="${resource(dir: 'css', file: 'question.css')}" type="text/css" />
 		<resource:richTextEditor type="advanced" />
 		<title><g:message code="default.show.label" args="[entityName]" /></title>	
 		<g:javascript library="jquery" />		
@@ -65,21 +66,10 @@
 					</table>
 				</div>
 				
-				<div id="contentQuest" style="background-color: #eee;
-				border: .2em solid #fff;
-				margin: 2em 2em 1em;
-				padding: 1em;
-			
-				-moz-box-shadow: 0px 0px 1.25em #ccc;
-				-webkit-box-shadow: 0px 0px 1.25em #ccc;
-				box-shadow: 0px 0px 1.25em #ccc;
-				-moz-border-radius: 0.6em;
-				-webkit-border-radius: 0.6em;
-				border-radius: 0.6em;
-				margin-left: 20%;">
-				<g:if test="${questionInstance?.content}">
-						<p>${questionInstance?.content.decodeHTML()}</p>
-				</g:if>
+				<div class="contentQuest" style="margin-left: 20%;">
+					<g:if test="${questionInstance?.content}">
+							<p>${questionInstance?.content.decodeHTML()}</p>
+					</g:if>
 				</div>
 				
 				<div id="tags" style="margin-left: 20%;">
@@ -148,9 +138,16 @@
 				<br/>
 				
 				<sec:ifLoggedIn>
-					<g:formRemote name="myForm" on404="alert('not found!')" update="answers" url="[controller: 'answer', action:'saveInShow']">						
-						<g:render template="/answer/createInShow"  />
+					<g:formRemote name="myForm" on404="alert('not found!')" update="answers" url="[controller: 'answer', action:'saveInShow']">
+						<div>						
+							<h1>Rapid Answer</h1>
+							<span style="float:right">
+								<g:link controller="answer" action="create" params="['id':questionInstance?.id]">Advanced answer >>></g:link>
+							</span>
+							<g:textArea name="contentAnswer" value="" style="width: 95%;margin-left:20px"/>
+						</div>
 						<g:hiddenField name="questionInstance" value="${questionInstance?.id}" />
+						<br/>
 						<fieldset class="buttons">
 							<g:submitButton name="create" class="save" value="Add Answer" />
 						</fieldset>

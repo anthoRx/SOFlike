@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile
 import org.apache.commons.lang.StringUtils
 import org.isima.Question
 import org.isima.Answer
+import grails.plugins.springsecurity.Secured
 
 class UserController {
 
@@ -84,8 +85,6 @@ class UserController {
             return
         }
 		
-		//Handle the avatar
-		
 		// Get the avatar file from the multi-part request
 		MultipartFile f = request.getFile('avatarFile')
 	  
@@ -116,7 +115,8 @@ class UserController {
         flash.message = message(code: 'default.updated.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])
         redirect(action: "show", id: userInstance.id)
     }
-
+	
+	@Secured('ROLE_ADMIN')
     def delete(Long id) {
         def userInstance = User.get(id)
         if (!userInstance) {

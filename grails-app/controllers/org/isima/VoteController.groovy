@@ -37,18 +37,21 @@ class VoteController {
 		def user = springSecurityService.currentUser
 		voteInstance.user = user
 		
-		if (!voteInstance.save(flush: true)) {
-			render(view: "create", model: [voteInstance: voteInstance])
-			return
-		}
-		
-		if(voteInstance.value > 0)
-			voteService.upVote(voteInstance)
-		else
-			voteService.downVote(voteInstance)
+		// Check if the user has already vote the interaction content
+		def alreadyVote = Vote.findAllByUserAndInteractionContent(user,voteInstance.interactionContent)
+		if(alreadyVote.empty) {			
+			if (!voteInstance.save(flush: true)) {
+				render(view: "create", model: [voteInstance: voteInstance])
+				return
+			}
 			
-		flash.message = message(code: 'default.created.message', args: [message(code: 'vote.label', default: 'Vote'), voteInstance.id])
-		//redirect(action: "show", id: voteInstance.id)
+			if(voteInstance.value > 0)
+				voteService.upVote(voteInstance)
+			else
+				voteService.downVote(voteInstance)
+				
+			flash.message = message(code: 'default.created.message', args: [message(code: 'vote.label', default: 'Vote'), voteInstance.id])
+		}
 		render(text: voteInstance.interactionContent.getValeurVotes())
 	}
 	

@@ -59,11 +59,16 @@ class GameService {
 	}
 	
 	/**
-	 * 
-	 * @param badge
-	 * @return
+	 * This method check if all of "badge" owners always have enough
+	 * points to obtain the badge.
+	 *  
+	 * @param badge The badge to check
+	 * @return nothing
 	 */
 	def updateBadgeAttribution(Badge badge) {
-		
+		for(usr in badge.users) {
+			if(usr.points < badge.pointsToObtain)
+				badge.removeFromUsers(usr)
+		}
 	}
 }

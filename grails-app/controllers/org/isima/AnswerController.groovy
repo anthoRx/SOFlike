@@ -30,30 +30,33 @@ class AnswerController {
 	}
 	
 	@Secured(['ROLE_USER','ROLE_ADMIN'])
-	def save() {
-		print params
-		def answerInstance = new Answer(params)
-		//We retrieve the user
-		def user = springSecurityService.currentUser
-		answerInstance.user = user
-		//We set the content. Error with richui if samename for field (question, answer)
-		answerInstance.content = params.contentAnswer
-		//We retrieve the question
-		def questionInstance = Question.get(params.questionId);
-		//We inform the question
-		answerInstance.question = questionInstance
-		//We set the date
-		answerInstance.creationDate = new Date()
-		
-		if (!answerInstance.save(flush: true)) {
-            flash.message ="The answer wasn't be created"
-			render(template: "answersByQuestion", model: [questionInstance: questionInstance])
-			return
+	def save() {		
+		if(params.questionId) {
+			def answerInstance = new Answer(params)
+			//We retrieve the user
+			def user = springSecurityService.currentUser
+			answerInstance.user = user
+			//We set the content. Error with richui if samename for field (question, answer)
+			answerInstance.content = params.contentAnswer
+			//We retrieve the question
+			def questionInstance = Question.get(params.questionId);
+			//We inform the question
+			answerInstance.question = questionInstance
+			//We set the date
+			answerInstance.creationDate = new Date()
+			
+			if (!answerInstance.save(flush: true)) {
+	            flash.message ="The answer wasn't be created"
+				render(template: "answersByQuestion", model: [questionInstance: questionInstance])
+				return
+			}
+			
+			answerService.create(answerInstance)
+			redirect(controller: "question", action: "show", id: questionInstance.id)
+		} else {
+	    	flash.message ="The answer wasn't be created"
+			redirect(controller: "answer", action: "list")
 		}
-		
-		answerService.create(answerInstance)
-		
-		redirect(controller: "question", action: "show", id: questionInstance.id)
 	}
 	
 
@@ -76,7 +79,6 @@ class AnswerController {
 	 */
     def edit(Long id) {
         def answerInstance = Answer.get(id)
-		print answerInstance
 		// Check if the user can update the question (only for the owner or an admin)
 		if(!userService.hasPermission(answerInstance)) {
 			flash.message = message(code: 'security.not.authorized')

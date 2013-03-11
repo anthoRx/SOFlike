@@ -24,10 +24,11 @@ class QuestionControllerTests {
 			currentUser: loggedInUser]
 		
 		def mockQuestionService = mockFor(QuestionService)
-		mockQuestionService.demand.update(0..2) {Question object, String oldContent -> return true}
 		mockQuestionService.demand.incrementNbView(0..1) {Question object -> return true}
+		mockQuestionService.demand.update(0..2) {Question object, String oldContent -> return true}
+		mockQuestionService.demand.create(0..1) {Question object -> return true}
 		controller.questionService = mockQuestionService.createMock()
-		
+
 		controller.userService = [hasPermission: {instance -> true}]		
 	}
 	

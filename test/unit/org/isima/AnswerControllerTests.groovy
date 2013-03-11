@@ -12,25 +12,42 @@ import java.sql.Timestamp
 class AnswerControllerTests {
 	
 	@Before
-	void setUp() {		
+	void setUp() {				
+		// We save the user in order to have an id
+		def loggedInUser = new User(username: 'bobby', enabled: false, password: 'password', name: 'Bob', lastName: 'Bobby', points: 0);
+		loggedInUser.save(flush: true)
+		
+		// We mock the springSecurityService
+		controller.springSecurityService = [
+			encodePassword: 'password',
+			reauthenticate: { String u -> true},
+			loggedIn: true,
+			currentUser: loggedInUser]
+		
 		def mockService = mockFor(AnswerService)
 		mockService.demand.update(0..2) {Answer object, String oldContent -> return true}
 		controller.answerService = mockService.createMock()
+		controller.userService = [hasPermission: {instance -> true}]		
+		
+		User.metaClass.isDirty = {
+			return true
+		}
 	}
 	
     def populateValidParams(params) {
         assert params != null
 		
-		def date = new Timestamp(new Date().getTime())
-		def loggedInUser = new User(username: 'bobby', enabled: false, password: 'password', name: 'Bob', lastName: 'Bobby', points: 0);
-		loggedInUser.save(flush: true)		
+		def date = new Timestamp(new Date().getTime())	
 		def question = new Question(title: 'Should I buy a boat ??', nbView: 10, content: 'That is the question', creationDate: date)
 		question.save(flush: true)
+		controller.springSecurityService.currentUser.addToInteractionContents(question).save()
 		
 		params["content"] = "Yes of course"
+		params["contentAnswer"] = "Yes of course"
 		params["creationDate"] = date
-		params["user"] = loggedInUser
+		params["user"] = controller.springSecurityService.currentUser
 		params["question"] = question
+		params["questionId"] = question.id
     }
 
     void testIndex() {
@@ -46,24 +63,19 @@ class AnswerControllerTests {
         assert model.answerInstanceTotal == 0
     }
 
-    void testCreate() {
-        def model = controller.create()
-
-        assert model.answerInstance != null
-    }
 
     void testSave() {
         controller.save()
-
-        assert model.answerInstance != null
-        assert view == '/answer/create'
+		
+		assert controller.flash.message != null
+        assert response.redirectedUrl == '/answer/list'
 
         response.reset()
 
         populateValidParams(params)
         controller.save()
 
-        assert response.redirectedUrl == '/answer/show/1'
+        assert response.redirectedUrl == '/question/show/' + params["questionId"]
         assert controller.flash.message != null
         assert Answer.count() == 1
     }
@@ -131,7 +143,7 @@ class AnswerControllerTests {
         populateValidParams(params)
         controller.update()
 
-        assert response.redirectedUrl == "/answer/show/$answer.id"
+        assert response.redirectedUrl == "/question/show/$answer.question.id"
         assert flash.message != null
 
         //test outdated version number
@@ -163,11 +175,13 @@ class AnswerControllerTests {
         assert Answer.count() == 1
 
         params.id = answer.id
-
+		
+		def qId = answer.question.id
+		
         controller.delete()
 
         assert Answer.count() == 0
         assert Answer.get(answer.id) == null
-        assert response.redirectedUrl == '/answer/list'
+        assert response.redirectedUrl == "/question/show/$answer.question.id"
     }
 }

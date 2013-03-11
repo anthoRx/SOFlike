@@ -3,16 +3,24 @@ package org.isima
 
 
 import org.junit.*
+
 import grails.test.mixin.*
+import java.sql.Timestamp
 
 @TestFor(CommentController)
-@Mock(Comment)
+@Mock([Comment,Answer,User,Question])
 class CommentControllerTests {
-
+		
     def populateValidParams(params) {
+		def date = new Timestamp(new Date().getTime())
+		def question = new Question(title: 'Should I buy a boat ??', nbView: 10, content: 'That is the question', creationDate: date)
+		question.save(flush: true)
+		
         assert params != null
-        // TODO: Populate valid properties like...
-        //params["name"] = 'someValidName'
+		params["content"] = "my comment"
+		params["creationDate"] = date
+		params["ieId"] = "my comment"
+		params["question"] = question
     }
 
     void testIndex() {
@@ -28,27 +36,21 @@ class CommentControllerTests {
         assert model.commentInstanceTotal == 0
     }
 
-    void testCreate() {
-        def model = controller.create()
+	/**
+    void testSaveInShow() {
+        controller.saveInShow()
 
-        assert model.commentInstance != null
-    }
-
-    void testSave() {
-        controller.save()
-
-        assert model.commentInstance != null
-        assert view == '/comment/create'
+        assert model.ieInstance == null
+        assert Comment.count() == 0
 
         response.reset()
 
         populateValidParams(params)
-        controller.save()
-
-        assert response.redirectedUrl == '/comment/show/1'
-        assert controller.flash.message != null
+        controller.saveInShow()
+		
         assert Comment.count() == 1
     }
+	
 
     void testShow() {
         controller.show()
@@ -152,4 +154,5 @@ class CommentControllerTests {
         assert Comment.get(comment.id) == null
         assert response.redirectedUrl == '/comment/list'
     }
+    */
 }

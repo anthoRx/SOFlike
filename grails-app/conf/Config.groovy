@@ -31,11 +31,7 @@ grails.mime.types = [
 
 // URL Mapping Cache Max Size, defaults to 5000
 //grails.urlmapping.cache.maxsize = 1000
-
-grails.config.locations = [ "classpath:${appName}-config.properties",
-	"classpath:${appName}-config.groovy",
-	"file:${userHome}/.grails/${appName}-config.properties",
-	"file:${userHome}/.grails/${appName}-config.groovy"]
+grails.config.locations = [org.isima.GameConfig]
 
 // What URL patterns should be processed by the resources plugin
 grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*', '/plugins/*']

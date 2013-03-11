@@ -84,7 +84,7 @@
 					</tr>
 					<tr>
 						<td colspan="3">
-							<span>asked <g:formatDate format="MMM	''yy 'at' k:mm" date="${questionInstance?.creationDate}" locale="EN_en"/></span>
+							<span>asked <g:formatDate format="MMM ''yy 'at' k:mm" date="${questionInstance?.creationDate}" locale="EN_en"/></span>
 							by ${fieldValue(bean: questionInstance, field: "user")}
 						</td>
 						<td>

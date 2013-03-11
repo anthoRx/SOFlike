@@ -1,7 +1,9 @@
+package org.isima
+
 game{
 	points{
-       question{
-		   create = 20
+	   question{
+		   create = 50
 		   nbView = 1
 	   }
 	   
@@ -10,17 +12,15 @@ game{
 	   }
 	   
 	   vote {
-		   up = 40
-		   down = 40		   
-	   }
-	   
-	   comment {
-		   create = 10
+		   up = 10
+		   down = 10
 	   }
 	}
 	   
    limits{
-	   nbView = 200
+	   question{
+		   nbView = 200
+	   }
    }
 }
 

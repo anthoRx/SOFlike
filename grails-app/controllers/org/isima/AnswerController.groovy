@@ -41,7 +41,9 @@ class AnswerController {
 			render(template: "answersByQuestion", model: [questionInstance: questionInstance])
 			return
 		}
-
+		
+		answerService.create(answerInstance)
+		
 		render(template: "answersByQuestion", model: [questionInstance: questionInstance])
 	}
 	

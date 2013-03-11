@@ -69,7 +69,7 @@ class User {
 		//We set enabled true
 		enabled = true;
 		//We add the avatar				
-		def img = ImageIO.read(new File("/Users/PFR/Desktop/client.png"));
+		def img = ImageIO.read(new File("C:\\Users\\toony\\Desktop\\client.png"));
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ImageIO.write( img, "png", baos );
 		baos.flush();

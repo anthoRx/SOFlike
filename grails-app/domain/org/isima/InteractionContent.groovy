@@ -47,4 +47,13 @@ abstract class InteractionContent implements Comparable<InteractionContent> {
 		Date date= new Date()
 		creationDate = date
 	}
+	
+	public String getResume()
+	{
+		String resume = content;
+		if(resume.size() > 40)
+			resume = content.substring(0, 40);
+			
+		return resume + "...";
+	}
 }

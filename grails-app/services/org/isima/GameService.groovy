@@ -14,13 +14,13 @@ class GameService {
 	/**
 	 * This method check the game config file to to know if points have to 
 	 * be add to the user provided in params.
+	 * See conf/Gameconfig.groovy for more informations
 	 * 
 	 * @param usr The user concerned by the points
 	 * @param actionFullName Name of action realized
 	 * @return nothing
 	 */
-    def askForPoints(User usr, String domain, String action) {
-		
+    def askForPoints(User usr, String domain, String action) {		
 		// try to find the number of points associed with the action
 		def configPoints = grailsApplication.config.game.points[domain][action]
 		
@@ -56,5 +56,14 @@ class GameService {
 				usr.badges.add(badge)
 		}		
 		usr.save(flush: true)
+	}
+	
+	/**
+	 * 
+	 * @param badge
+	 * @return
+	 */
+	def updateBadgeAttribution(Badge badge) {
+		
 	}
 }

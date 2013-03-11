@@ -7,6 +7,7 @@ class VoteController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 	def springSecurityService
+	def voteService
 
     def index() {
         redirect(action: "list", params: params)
@@ -17,7 +18,17 @@ class VoteController {
         params.max = Math.min(max ?: 10, 100)
         [voteInstanceList: Vote.list(params), voteInstanceTotal: Vote.count()]
     }
+	
+	def show(Long id) {
+		def voteInstance = Vote.get(id)
+		if (!voteInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'vote.label', default: 'Vote'), id])
+			redirect(action: "list")
+			return
+		}
 
+		[voteInstance: voteInstance]
+	}
 	
 	@Secured(['ROLE_USER','ROLE_ADMIN'])
 	def saveInShow() {
@@ -30,9 +41,15 @@ class VoteController {
 			render(view: "create", model: [voteInstance: voteInstance])
 			return
 		}
-
+		
+		if(voteInstance.value > 0)
+			voteService.upVote(voteInstance)
+		else
+			voteService.downVote(voteInstance)
+			
 		flash.message = message(code: 'default.created.message', args: [message(code: 'vote.label', default: 'Vote'), voteInstance.id])
-		redirect(action: "show", id: voteInstance.id)
+		//redirect(action: "show", id: voteInstance.id)
+		render(text: voteInstance.interactionContent.getValeurVotes())
 	}
 	
 	

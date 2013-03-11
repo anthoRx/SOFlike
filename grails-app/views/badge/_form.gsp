@@ -18,11 +18,4 @@
 	<g:field name="pointsToObtain" type="number" value="${badgeInstance.pointsToObtain}" required=""/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: badgeInstance, field: 'users', 'error')} ">
-	<label for="users">
-		<g:message code="badge.users.label" default="Users" />
-		
-	</label>
-	
-</div>
 

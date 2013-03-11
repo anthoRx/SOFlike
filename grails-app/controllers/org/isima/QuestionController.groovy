@@ -60,7 +60,9 @@ class QuestionController {
             render(view: "create", model: [questionInstance: questionInstance])
             return
         }
-
+		
+		questionService.create(questionInstance)
+		
         flash.message = message(code: 'default.created.message', args: [message(code: 'question.label', default: 'Question'), questionInstance.id])
         redirect(action: "show", id: questionInstance.id)
     }

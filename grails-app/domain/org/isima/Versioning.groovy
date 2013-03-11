@@ -11,4 +11,13 @@ class Versioning {
     static constraints = {
 		content ( blank: false, maxSize: 50000, html: true )
     }
+	
+	public String getResume()
+	{
+		String resume = content;
+		if(resume.size() > 40)
+			resume = content.substring(0, 40);
+			
+		return resume + "...";
+	}
 }
